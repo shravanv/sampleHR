@@ -22,9 +22,41 @@
         .ui-nosvg .ui-icon-moneyicon:after {
             background-image: url("css/themes/images/icons-png/money.png");
         }
+        .login  {
+            background-image: url("css/themes/images/loginImage2.jpg");
+            background-color: #cccccc;
+        }
+
+        
     </style>
 </head>
 <body>
+    <!-- login page -->
+    <div data-role="page" id="login" class="login" data-theme="a">
+
+
+        <!-- <div  data-theme="a" class="ui-corner-all">
+           
+                <div style="padding:10px 20px;">
+                    <h3>Login</h3>
+                    <input type="text" name="frmTime" id="frmTime" value="" placeholder="UserId" data-theme="a">
+                    <label for="toTime" class="ui-hidden-accessible">To:</label>
+                    <input type="text" name="toTime" id="toTime" value="" placeholder="password" data-theme="a">
+                    <button type="" id="btnAddMeet" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Login</button>
+                </div>
+            
+        </div> -->
+        <h1 class="loginHeader">Login</h1>
+        <div>
+            
+            <form name="loginform" id="loginform" >
+                    <input type="text" name="log" id="user_login" class="" value="" size="20"></input>
+                    <input type="password" name="pwd" id="user_pass" class="" value="" size="20"></input>
+                    <button type="">Login</button>
+            </form>
+        </div>
+</div>
+    <!-- Home Page -->
     <div data-role="page" id="home" data-theme="a">
         <div data-role="panel" id="myPanel" data-display="overlay" data-position="right"> 
             <ul data-role="listview" data-theme="a" data-divider-theme="a" style="margin-top:-16px;" class="nav-search">
