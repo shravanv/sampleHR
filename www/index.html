@@ -32,7 +32,7 @@
                     <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-user" href="#profile">Profile</a>
                 </li>
                 <li data-filtertext="accordions collapsible set collapsible-set collapsed">
-                    <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-moneyicon" href="#calendar">Pay</a>
+                    <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-moneyicon" href="#">Pay</a>
                 </li>
                 <li data-filtertext="wai-aria voiceover accessibility screen reader">
                     <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-clock" href="#">Time Card</a>
@@ -144,7 +144,7 @@
         </div>
         <div style="display:inline-block; vertical-align: middle;">
             <a href="#profile" data-role="button" data-inline="true">Save</a>
-            <a href="#profile"style="position: relative;left:50%" data-role="button" data-inline="true" >Cancel</a>
+            <a href="#profile"style="position: relative;left:85%" data-role="button" data-inline="true" >Cancel</a>
         </div>
     </div>
     <!-- Calendar Page -->
@@ -158,55 +158,67 @@
         <ul data-role="listview" data-inset="true">
             <!-- <li data-role="divider">Schedule. .</li> -->
             <li>
-                <a href="#">
+                <a href="#" >
                 <h2>9.00 AM - 10.00 AM</h2>
                 <p>No Schedule</p>
                 </a>
-                <a href="#" data-transition="pop" data-icon="plus">Add Meeting</a>
+                <a href="#"  class="addMeeting" data-transition="pop" data-icon="plus">Add Meeting</a>
             </li>
             <li>
                 <a href="#">
                   <h2>10.00 AM - 11.00 AM</h2>
                   <p>Dev's Meeting. Agenda - Off Cycle Check</p>
                 </a>
-                 <a href="#" data-transition="pop" data-icon="plus">Add Meeting</a>
+                <a href="#"  class="addMeeting" data-transition="pop" data-icon="plus">Add Meeting</a>
             </li>
             <li>
                 <a href="#">
                 <h2>11.00 AM - 12.00 PM</h2>
                 <p>No Schedule</p>
                 </a>
-                <a href="#" data-transition="pop" data-icon="plus">Add Meeting</a>
+                <a href="#" class="addMeeting" data-transition="pop" data-icon="plus">Add Meeting</a>
             </li>
             <li>
-                <a href="#">
+                <a href="#" >
                 <h2>12.00 PM - 1.00 PM</h2>
                 <p>No Schedule</p>
                 </a>
-                <a href="#" data-transition="pop" data-icon="plus">Add Meeting</a>
+                <a href="#" class="addMeeting" data-transition="pop" data-icon="plus">Add Meeting</a>
             </li>
         </ul>
+        <a href="#popupAddMeet" id="addMeet" data-rel="popup" data-position-to="" data-transition="pop"></a>
+        <div data-role="popup" id="popupAddMeet" data-theme="a" class="ui-corner-all">
+           
+                <div style="padding:10px 20px;">
+                    <h3>Add Meeting</h3>
+                    <label for="frmTime" class="ui-hidden-accessible">From:</label>
+                    <input type="text" name="frmTime" id="frmTime" value="" placeholder="from" data-theme="a">
+                    <label for="toTime" class="ui-hidden-accessible">To:</label>
+                    <input type="text" name="toTime" id="toTime" value="" placeholder="to" data-theme="a">
+                    <label for="desc" class="ui-hidden-accessible">Desc/Agenda:</label>
+                    <input type="text" name="desc" id="desc" value="" placeholder="Desc/Agenda" data-theme="a">
+                    <button type="" id="btnAddMeet" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Add Meeing</button>
+                </div>
+            
+        </div>
     </div>
     <!-- UI Ends Here -->
     <!-- script -->
     <script>
+        var date = new Date();
+        var dateString = (date.getMonth()+1).toString()+"/"+date.getDate()+"/"+date.getFullYear();
         $(document).on("pagecreate","#home",function(){
 
-           console.log("home page");
-           var date = new Date();
-           var dateString = date.toLocaleTimeString();
-           $("#logTime1").html("Today logged in at "+dateString);
-           $("#logTime2").html("Yesterday logged out at "+dateString);
+           var timeString = date.toLocaleTimeString();
+           $("#logTime1").html("Today logged in at "+timeString);
+           $("#logTime2").html("Yesterday logged out at "+timeString);
            $("#schedule1").html("11.00 AM to 12.00 PM - Dev's Meeting");
            $("#schedule2").html("5.30 PM - 6.00 PM - Product Roadmap");
 
         });
 
         $(document).on("pagecreate","#profile",function(){
-
-           console.log("profile page");
            $("#editPersnInfo").on("click",function(){
-                console.log("click");
                 $("#editPersnInfoLink").click();
 
            });
@@ -215,14 +227,24 @@
         $(document).on("pagecreate","#editPersonalInfo",function(){
 
            console.log("edit Personal Info page");
-           
-
         });
 
         $(document).on("pagecreate","#calendar",function(){
            console.log("Calendar page");
            $("#datepicker").datepicker();
-           //$("#datepicker").datepicker("option", "defaultDate",+2);
+           
+           $(".addMeeting").on("click",function(e){
+                e.preventDefault();
+                var times = $(this).prev().children("h2:first-child").html();
+                $(frmTime).val(times.split("-")[0].trim());
+                $(toTime).val(times.split("-")[1].trim());
+                $( "#popupAddMeet" ).popup( "open" );
+           });
+           
+           $("#btnAddMeet").on("click",function(e){
+                e.preventDefault();
+                $( "#popupAddMeet" ).popup( "close" );
+           });
         });
     </script>
 </body>
