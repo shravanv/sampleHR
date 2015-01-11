@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vantage</title>
+    <link rel="stylesheet" href="css/themes/Blue.min.css" />
+    <link rel="stylesheet" href="datepicker/jquery.mobile.datepicker.css" />
+    <link rel="stylesheet" href="datepicker/jquery.mobile.datepicker.theme.css" />
+    <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
+    
+    <script src="js/jquery-2.0.3.js"></script>
+    <script src="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="datepicker/external/jquery-ui/datepicker.js"></script>
+    <script src="datepicker/jquery.mobile.datepicker.js"></script>
+    <style type="text/css">
+        .ui-icon-moneyicon:after {
+            background-image: url("css/themes/images/SVG/money.svg");
+        }
+        /* Fallback */
+        .ui-nosvg .ui-icon-moneyicon:after {
+            background-image: url("css/themes/images/icons-png/money.png");
+        }
+    </style>
+</head>
+<body>
+    <div data-role="page" id="home" data-theme="a">
+        <div data-role="panel" id="myPanel" data-display="overlay" data-position="right"> 
+            <ul data-role="listview" data-theme="a" data-divider-theme="a" style="margin-top:-16px;" class="nav-search">
+                <li data-filtertext="wai-aria voiceover accessibility screen reader">
+                    <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-user" href="#profile">Profile</a>
+                </li>
+                <li data-filtertext="accordions collapsible set collapsible-set collapsed">
+                    <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-moneyicon" href="#calendar">Pay</a>
+                </li>
+                <li data-filtertext="wai-aria voiceover accessibility screen reader">
+                    <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-clock" href="#">Time Card</a>
+                </li>
+                <li data-filtertext="wai-aria voiceover accessibility screen reader">
+                    <a class="ui-btn  ui-corner-all ui-shadow ui-icon-calendar ui-btn-icon-left"href="#calendar">Calendar</a>
+                    </li>
+             </ul>               
+        </div>
+        
+        <div data-role="header" data-position="fixed">
+            <span>
+                <a href="#" style="background-color:#50a7e6;border:0;" class="ui-btn  ui-corner-all ui-shadow ui-icon-home ui-btn-icon-notext"></a>
+                <a href="#" style="background-color:#50a7e6;border:0;" class="ui-btn  ui-corner-all ui-shadow ui-icon-clock ui-btn-icon-notext"></a>
+                <a  href="#myPanel" style="background-color:#50a7e6;border:0;" class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-notext"></a>
+            </span>
+        </div>
+        <div data-role="footer" data-position="fixed">
+           
+            <h1>my Day</h1>
+            
+        </div>
+
+        <ul data-role="listview">
+          
+          <li data-icon="false">
+            <a href="#"><img src="css/themes/images/clockIcon2.png">
+                <h2 class="">Your Time</h2>
+                <p class=""><strong id="logTime1"></strong></p>
+                <p class=""><strong id="logTime2"></strong></p>
+            </a>
+          </li>
+          <li data-icon="false">
+            <a href="#"><img src="css/themes/images/calendarIcon.png">
+                <h2 class="ui-li-heading">Your Calendar</h2>
+                <p class="ui-li-desc"><strong id="schedule1"></strong></p>
+                <p class="ui-li-desc"><strong id="schedule2"></strong></p>
+            </a>
+          </li>
+          <li data-icon="false">
+            <a href="#"><img src="css/themes/images/tasksIcon.png">
+                <h2 class="">Your Tasks</h2>
+                <p class=""><strong id="logTime1">1. Hotfix</strong></p>
+                <p class=""><strong id="logTime2">2. Timesheet</strong></p>
+            </a>
+          </li>
+          <li data-icon="false">
+            <a href="#"><img src="css/themes/images/moneyIcon.png">
+                <h2 class="">Your Pay</h2>
+                <p class=""><strong id="logTime1">Total Pay : $2255.00</strong></p>
+                <p class=""><strong id="logTime2">Deductions: $150.00</strong></p>
+                <p class=""><strong id="logTime2">Net Pay: $2105.00</strong></p>
+            </a>
+           </li>
+        </ul>
+        
+    </div>
+
+    <!-- Profile Page -->
+    <div data-role="page" id="profile" data-theme="a">
+        <div data-role="header" data-position="fixed">
+            <span>
+                <a href="#home" style="background-color:#50a7e6;border:0;" class="ui-btn  ui-icon-carat-l ui-btn-icon-notext"></a>
+            </span>
+        </div>
+        <ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
+            <li class="ui-li-static ui-body-inherit ui-first-child">
+                <h3> &nbsp;Personal Info</h3>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-user ui-btn-icon-notext"></a><strong>Shravan Kumar Varala</strong></p>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-location ui-btn-icon-notext"></a><strong>Nizamabad, India</strong></p>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-phone ui-btn-icon-notext"></a><strong>9000461056</strong></p>
+                <p  class="ui-li-aside ui-btn  ui-corner-all ui-shadow ui-icon-edit ui-btn-icon-notext" id="editPersnInfo"></p>
+                <a style="display:none;" href="#editPersonalInfo" id="editPersnInfoLink"></a>
+            </li>
+            <li class="ui-li-static ui-body-inherit ">
+                <h3>Work Info</h3>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-star ui-btn-icon-notext"></a><strong>Member Technical, NAS GPT</strong></p>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-mail ui-btn-icon-notext"></a><strong>shravan.varala@adp.com</strong></p>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-location ui-btn-icon-notext"></a><strong>Hyderabad, India</strong></p>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-phone ui-btn-icon-notext"></a><strong>040-64648457</strong></p>
+                <p class="ui-li-aside"></p>
+            </li>
+            <li class="ui-li-static ui-body-inherit ui-last-child">
+                <h3> &nbsp;Emergency Contact</h3>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-user ui-btn-icon-notext"></a><strong>Narender, Father</strong></p>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-phone ui-btn-icon-notext"></a><strong>9949422172</strong></p>
+                <p class="ui-li-aside ui-btn  ui-corner-all ui-shadow ui-icon-edit ui-btn-icon-notext" id="editEmergContact"></p>
+            </li>
+        </ul>
+    </div>
+    <!-- Edit Personal Info -->
+    <div data-role="page" id="editPersonalInfo" data-theme="a">
+        <div data-role="header" data-position="fixed">
+            <span><a href="#home" style="background-color:#50a7e6;border:0;" class="ui-btn  ui-icon-carat-l ui-btn-icon-notext"></a>
+            <a style="color:#FFFAF0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Edit Perosnal Information</a></span>
+        </div>
+       
+        <div class="ui-field-contain">
+            <label for="name">Full Name</label>
+            <input type="text" name="text" id="name" value="" />
+        </div>
+        <div class="ui-field-contain">
+            <label for="name">City</label>
+            <input type="text" name="name" id="name">
+        </div>
+        <div class="ui-field-contain">
+            <label for="name">Contact</label>
+            <input type="tel" name="name" id="name">
+        </div>
+        <div style="display:inline-block; vertical-align: middle;">
+            <a href="#profile" data-role="button" data-inline="true">Save</a>
+            <a href="#profile"style="position: relative;left:50%" data-role="button" data-inline="true" >Cancel</a>
+        </div>
+    </div>
+    <!-- Calendar Page -->
+    <div data-role="page" id="calendar" data-theme="a">
+        <div data-role="header" data-position="fixed">
+            <span><a href="#home" style="background-color:#50a7e6;border:0;" class="ui-btn  ui-icon-carat-l ui-btn-icon-notext"></a>
+            <a style="color:#FFFAF0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Calendar</a></span>
+        </div>
+        <!-- <input type="date" name="date" id="date" value="" > -->
+        <input type="text" id="datepicker"></input>
+        <ul data-role="listview" data-inset="true">
+            <!-- <li data-role="divider">Schedule. .</li> -->
+            <li>
+                <a href="#">
+                <h2>9.00 AM - 10.00 AM</h2>
+                <p>No Schedule</p>
+                </a>
+                <a href="#" data-transition="pop" data-icon="plus">Add Meeting</a>
+            </li>
+            <li>
+                <a href="#">
+                  <h2>10.00 AM - 11.00 AM</h2>
+                  <p>Dev's Meeting. Agenda - Off Cycle Check</p>
+                </a>
+                 <a href="#" data-transition="pop" data-icon="plus">Add Meeting</a>
+            </li>
+            <li>
+                <a href="#">
+                <h2>11.00 AM - 12.00 PM</h2>
+                <p>No Schedule</p>
+                </a>
+                <a href="#" data-transition="pop" data-icon="plus">Add Meeting</a>
+            </li>
+            <li>
+                <a href="#">
+                <h2>12.00 PM - 1.00 PM</h2>
+                <p>No Schedule</p>
+                </a>
+                <a href="#" data-transition="pop" data-icon="plus">Add Meeting</a>
+            </li>
+        </ul>
+    </div>
+    <!-- UI Ends Here -->
+    <!-- script -->
+    <script>
+        $(document).on("pagecreate","#home",function(){
+
+           console.log("home page");
+           var date = new Date();
+           var dateString = date.toLocaleTimeString();
+           $("#logTime1").html("Today logged in at "+dateString);
+           $("#logTime2").html("Yesterday logged out at "+dateString);
+           $("#schedule1").html("11.00 AM to 12.00 PM - Dev's Meeting");
+           $("#schedule2").html("5.30 PM - 6.00 PM - Product Roadmap");
+
+        });
+
+        $(document).on("pagecreate","#profile",function(){
+
+           console.log("profile page");
+           $("#editPersnInfo").on("click",function(){
+                console.log("click");
+                $("#editPersnInfoLink").click();
+
+           });
+        });
+
+        $(document).on("pagecreate","#editPersonalInfo",function(){
+
+           console.log("edit Personal Info page");
+           
+
+        });
+
+        $(document).on("pagecreate","#calendar",function(){
+           console.log("Calendar page");
+           $("#datepicker").datepicker();
+           //$("#datepicker").datepicker("option", "defaultDate",+2);
+        });
+    </script>
+</body>
+</html>
