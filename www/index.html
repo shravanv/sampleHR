@@ -14,6 +14,7 @@
     <script src="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script src="datepicker/external/jquery-ui/datepicker.js"></script>
     <script src="datepicker/jquery.mobile.datepicker.js"></script>
+    <script src="js/appUtils.js"></script>
     <style type="text/css">
         .ui-icon-moneyicon:after {
             background-image: url("css/themes/images/SVG/money.svg");
@@ -25,37 +26,36 @@
         .login  {
             background-image: url("css/themes/images/loginImage2.jpg");
             background-color: #cccccc;
+            background-repeat:no-repeat;
+            
+        }
+        tr {
+            border-bottom: 1px solid #d6d6d6;
         }
 
+        .loginButton{
+            background-color: initial;
+            width: 50px;
+            margin-left: 37% !important;
+            margin-right: 10% !important;
+        }
+        .loginInput2{
+            margin-left: 30% !important;
+            width:145px !important;
+            opacity:0.6 !important;
+        }
         
     </style>
 </head>
 <body>
     <!-- login page -->
     <div data-role="page" id="login" class="login" data-theme="a">
-
-
-        <!-- <div  data-theme="a" class="ui-corner-all">
-           
-                <div style="padding:10px 20px;">
-                    <h3>Login</h3>
-                    <input type="text" name="frmTime" id="frmTime" value="" placeholder="UserId" data-theme="a">
-                    <label for="toTime" class="ui-hidden-accessible">To:</label>
-                    <input type="text" name="toTime" id="toTime" value="" placeholder="password" data-theme="a">
-                    <button type="" id="btnAddMeet" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Login</button>
-                </div>
-            
-        </div> -->
-        <h1 class="loginHeader">Login</h1>
-        <div>
-            
-            <form name="loginform" id="loginform" >
-                    <input type="text" name="log" id="user_login" class="" value="" size="20"></input>
-                    <input type="password" name="pwd" id="user_pass" class="" value="" size="20"></input>
-                    <button type="">Login</button>
-            </form>
-        </div>
-</div>
+        <div style="margin-top:14%; padding:15%"data-role="main" class="ui-content">
+            <input type="text" name="log" id="userId" placeholder="userid" class="loginInput" value="" ></input>
+            <input type="password" name="pwd" id="userPwd" placeholder="password" class="loginInput" value=""></input>
+            <button style="margin-left:25%" class="ui-btn ui-btn-inline ui-corner-all" id="btnLogin">Login</button> 
+        </div >
+    </div>
     <!-- Home Page -->
     <div data-role="page" id="home" data-theme="a">
         <div data-role="panel" id="myPanel" data-display="overlay" data-position="right"> 
@@ -64,14 +64,20 @@
                     <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-user" href="#profile">Profile</a>
                 </li>
                 <li data-filtertext="accordions collapsible set collapsible-set collapsed">
-                    <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-moneyicon" href="#">Pay</a>
+                    <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-moneyicon" href="#paypage">Pay</a>
                 </li>
                 <li data-filtertext="wai-aria voiceover accessibility screen reader">
-                    <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-clock" href="#">Time Card</a>
+                    <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-clock" href="#timecard">Time Card</a>
                 </li>
                 <li data-filtertext="wai-aria voiceover accessibility screen reader">
                     <a class="ui-btn  ui-corner-all ui-shadow ui-icon-calendar ui-btn-icon-left"href="#calendar">Calendar</a>
-                    </li>
+                </li>
+                <li data-filtertext="wai-aria voiceover accessibility screen reader">
+                    <a class="ui-btn  ui-corner-all ui-shadow ui-icon-calendar ui-btn-icon-left"href="#leavepage">Leaves</a>
+                </li>
+                <li data-filtertext="wai-aria voiceover accessibility screen reader">
+                    <a class="ui-btn  ui-corner-all ui-shadow ui-icon-lock ui-btn-icon-left"href="#login">Logout</a>
+                </li>
              </ul>               
         </div>
         
@@ -91,7 +97,7 @@
         <ul data-role="listview">
           
           <li data-icon="false">
-            <a href="#"><img src="css/themes/images/clockIcon2.png">
+            <a href="#"><img src="css/themes/images/clockIcon.png">
                 <h2 class="">Your Time</h2>
                 <p class=""><strong id="logTime1"></strong></p>
                 <p class=""><strong id="logTime2"></strong></p>
@@ -106,9 +112,10 @@
           </li>
           <li data-icon="false">
             <a href="#"><img src="css/themes/images/tasksIcon.png">
-                <h2 class="">Your Tasks</h2>
-                <p class=""><strong id="logTime1">1. Hotfix</strong></p>
-                <p class=""><strong id="logTime2">2. Timesheet</strong></p>
+                <h2 class="">You Have</h2>
+                <p class=""><strong id="logTime1">10 Vacation</strong></p>
+                <p class=""><strong id="logTime2">6 Personal</strong></p>
+                <p class=""><strong id="logTime2"><span>2<span> Sick</strong></p>
             </a>
           </li>
           <li data-icon="false">
@@ -133,11 +140,10 @@
         <ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
             <li class="ui-li-static ui-body-inherit ui-first-child">
                 <h3> &nbsp;Personal Info</h3>
-                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-user ui-btn-icon-notext"></a><strong>Shravan Kumar Varala</strong></p>
-                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-location ui-btn-icon-notext"></a><strong>Nizamabad, India</strong></p>
-                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-phone ui-btn-icon-notext"></a><strong>9000461056</strong></p>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-user ui-btn-icon-notext"></a><strong id="prName">Shravan Kumar Varala</strong></p>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-location ui-btn-icon-notext"></a><strong id="prCity">Nizamabad, India</strong></p>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-phone ui-btn-icon-notext"></a><strong id="prContact">9000461056</strong></p>
                 <p  class="ui-li-aside ui-btn  ui-corner-all ui-shadow ui-icon-edit ui-btn-icon-notext" id="editPersnInfo"></p>
-                <a style="display:none;" href="#editPersonalInfo" id="editPersnInfoLink"></a>
             </li>
             <li class="ui-li-static ui-body-inherit ">
                 <h3>Work Info</h3>
@@ -149,9 +155,9 @@
             </li>
             <li class="ui-li-static ui-body-inherit ui-last-child">
                 <h3> &nbsp;Emergency Contact</h3>
-                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-user ui-btn-icon-notext"></a><strong>Narender, Father</strong></p>
-                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-phone ui-btn-icon-notext"></a><strong>9949422172</strong></p>
-                <p class="ui-li-aside ui-btn  ui-corner-all ui-shadow ui-icon-edit ui-btn-icon-notext" id="editEmergContact"></p>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-user ui-btn-icon-notext"></a><strong id="prEmName">Narender, Father</strong></p>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-phone ui-btn-icon-notext"></a><strong id="prEmContact">9949422172</strong></p>
+                <p class="ui-li-aside ui-btn  ui-corner-all ui-shadow ui-icon-edit ui-btn-icon-notext" id="editEmContact"></p>
             </li>
         </ul>
     </div>
@@ -163,20 +169,40 @@
         </div>
        
         <div class="ui-field-contain">
-            <label for="name">Full Name</label>
-            <input type="text" name="text" id="name" value="" />
+            <label for="pefullname">Full Name</label>
+            <input type="text" name="pefullname" id="pefullname" value="" />
         </div>
         <div class="ui-field-contain">
-            <label for="name">City</label>
-            <input type="text" name="name" id="name">
+            <label for="pecity">City</label>
+            <input type="text" name="pecity" id="pecity">
         </div>
         <div class="ui-field-contain">
-            <label for="name">Contact</label>
-            <input type="tel" name="name" id="name">
+            <label for="pecontact">Contact</label>
+            <input type="tel" name="pecontact" id="pecontact">
         </div>
         <div style="display:inline-block; vertical-align: middle;">
-            <a href="#profile" data-role="button" data-inline="true">Save</a>
-            <a href="#profile"style="position: relative;left:85%" data-role="button" data-inline="true" >Cancel</a>
+            <a href="#" data-role="button" id="btnSavePersonalInfo" data-inline="true">Save</a>
+            <a href="#profile"style="position: relative;left:95%" data-role="button" data-inline="true" >Cancel</a>
+        </div>
+    </div>
+    <!-- Edit Emergency Contact Info -->
+    <div data-role="page" id="editEmergencyInfo" data-theme="a">
+        <div data-role="header" data-position="fixed">
+            <span><a href="#home" style="background-color:#50a7e6;border:0;" class="ui-btn  ui-icon-carat-l ui-btn-icon-notext"></a>
+            <a style="color:#FFFAF0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Edit Emergency Contact</a></span>
+        </div>
+       
+        <div class="ui-field-contain">
+            <label for="eename">Name</label>
+            <input type="text" name="eename" id="eename" value="" />
+        </div>
+        <div class="ui-field-contain">
+            <label for="eecontact">Contact</label>
+            <input type="tel" name="eecontact" id="eecontact">
+        </div>
+        <div style="display:inline-block; vertical-align: middle;">
+            <a href="#" id="btnEmSave" data-role="button" data-inline="true">Save</a>
+            <a href="#profile" id="btnEmCancel" style="position: relative;left:95%" data-role="button" data-inline="true" >Cancel</a>
         </div>
     </div>
     <!-- Calendar Page -->
@@ -229,9 +255,179 @@
                     <input type="text" name="toTime" id="toTime" value="" placeholder="to" data-theme="a">
                     <label for="desc" class="ui-hidden-accessible">Desc/Agenda:</label>
                     <input type="text" name="desc" id="desc" value="" placeholder="Desc/Agenda" data-theme="a">
-                    <button type="" id="btnAddMeet" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Add Meeing</button>
+                    <button type="" id="btnAddMeet" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Done</button>
                 </div>
             
+        </div>
+    </div>
+    <!-- Pay Page -->
+    <div data-role="page" id="paypage" data-theme="a">
+        <div data-role="header" data-position="fixed">
+            <span><a href="#home" style="background-color:#50a7e6;border:0;" class="ui-btn  ui-icon-carat-l ui-btn-icon-notext"></a>
+            <a style="color:#FFFAF0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pay</a></span>
+        </div>
+        <div data-role="main" class="ui-content">
+            <ul data-role="listview" data-inset="true">
+              <li style="background-color:burlywood;" data-role="list-divider">Pay Details</li>
+              <li data-icon="false"><a href="#">Gross Pay&nbsp;&nbsp;  : $45889678.0</a></li>
+              <li data-icon="false"><a href="#">Basic Pay  &nbsp;&nbsp;: $897456.0</a></li>
+              <li data-icon="false"><a href="#">Retierment &nbsp; : 12256.0</a></li>
+              <li data-icon="false"><a href="#">Tax      &nbsp;&nbsp;&nbsp;&nbsp;  : $4598.0</a></li>
+              <li data-icon="false"><a href="#">Take Home&nbsp;&nbsp;  : $4598.0</a></li>
+              <li style="background-color:burlywood;" data-role="list-divider">Tax withholding</li>
+              <li>
+                    <div data-role="collapsibleset">
+                        <div data-role="collapsible">
+                            <h3>Federal</h3>
+                            <div class="ui-field-contain">
+                                <label for="marStatus">Marital Status</label>
+                                <select name="marStatus" id="marStatus">
+                                    <option value="mon">Single</option>
+                                    <option value="tue">Married</option>
+                                    <option value="wed">Divorced</option>>
+                                </select>
+                            </div>
+                            <div class="ui-field-contain">
+                                <label for="dedAmt">Deduction Amount</label>
+                                <input type="tel" name="dedAmt" id="dedAmt">
+                            </div>
+                        </div>
+                        <div data-role="collapsible">
+                            <h3>State</h3>
+                            <div class="ui-field-contain">
+                                <label for="stWrkdIn">State Worked In</label>
+                                <select name="stWrkdIn" id="stWrkdIn">
+                                    <option value="AL">Alabama</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="NY">New York</option>
+                                    <option value="OH">Ohio</option>>
+                                </select>
+                            </div> 
+                            <div class="ui-field-contain">
+                                <label for="stLvdIn">State Lived In</label>
+                                <select name="stLvdIn" id="stLvdIn">
+                                    <option value="AL">Alabama</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="NY">New York</option>
+                                    <option value="OH">Ohio</option>>
+                                </select>
+                            </div>
+                            <div class="ui-field-contain">
+                                <label for="suSDI">School District (SUI/SDI)</label>
+                                <select name="suSDI" id="suSDI">
+                                    <option value="AL">Alabama</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="NY">New York</option>
+                                    <option value="OH">Ohio</option>>
+                                </select>
+                            </div>
+                        </div>
+                        <div data-role="collapsible">
+                            <h3>Local</h3>
+                            <div class="ui-field-contain">
+                                <label for="lvdLocal">LivedIn Local</label>
+                                <select name="lvdLocal" id="lvdLocal">
+                                    <option value="AL">Alabama</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="NY">New York</option>
+                                    <option value="OH">Ohio</option>>
+                                </select>
+                            </div>
+                            <div class="ui-field-contain">
+                                <label for="wrkLocal">WorkedIn Local</label>
+                                <select name="wrkLocal" id="wrkLocal">
+                                    <option value="AL">Alabama</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="NY">New York</option>
+                                    <option value="OH">Ohio</option>>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+              </li>
+            </ul> 
+        </div>
+    </div>
+    <!-- TimeCard Page -->
+    <div data-role="page" id="timecard" data-theme="a">
+        <div data-role="header" data-position="fixed">
+            <span><a href="#home" style="background-color:#50a7e6;border:0;" class="ui-btn  ui-icon-carat-l ui-btn-icon-notext"></a>
+            <a style="color:#FFFAF0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Timecard</a></span>
+        </div>
+        <!-- <input type="date" name="date" id="date" value="" > -->
+        <h3 id="curWeek"> </h3>
+        <table data-role="table" data-mode="" class="ui-responsive ui-shadow" id="tblTimeCard">
+          <thead>
+            <tr>
+              <th data-priority="1">Day</th>
+              <th data-priority="2">Loged In</th>
+              <th data-priority="3">Loged Out</th>
+              <th data-priority="4">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>11/01</td>
+              <td>9.00 AM</td>
+              <td>6.00 PM</td>
+              <td>9.00</td>
+            </tr>
+            <tr>
+              <td>12/01</td>
+              <td>9.30 AM</td>
+              <td>7.00 PM</td>
+              <td>9.30</td>
+            </tr>
+            <tr>
+              <td>13/01</td>
+              <td>9.00 AM</td>
+              <td>6.15 PM</td>
+              <td>9.15</td>
+            </tr>
+            <tr>
+              <td>14/01</td>
+              <td>9.00 AM</td>
+              <td>6.00 PM</td>
+              <td>8.00</td>
+            </tr>
+            <tr>
+              <td>15/01</td>
+              <td>9.00 AM</td>
+              <td>5.00 PM</td>
+              <td>8.00</td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    <!-- Leaves Page -->
+    <div data-role="page" id="leavepage" data-theme="a">
+        <div data-role="header" data-position="fixed">
+            <span><a href="#home" style="background-color:#50a7e6;border:0;" class="ui-btn  ui-icon-carat-l ui-btn-icon-notext"></a>
+            <a style="color:#FFFAF0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Leaves</a></span>
+        </div>
+        <div data-role="main" class="ui-content">
+            <ul data-role="listview" data-inset="true">
+              <li style="background-color:burlywood;" data-role="list-divider">Available Leaves</li>
+              <li data-icon="false">Vacation Leaves&nbsp;&nbsp;:&nbsp; 10</li>
+              <li data-icon="false">Personal Leaves&nbsp;&nbsp;:&nbsp; 6</li>
+              <li data-icon="false">Sick Leves &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;2</li>
+              <li style="background-color:burlywood;" data-role="list-divider">Apply Leave</li>
+              <li>
+                    <div style="padding:10px 20px;">
+                    <label for="frmTime" >From</label>
+                    <input type="text" name="frmTime" id="frmDate" value="" placeholder="from date" data-theme="a">
+                    <label for="toTime">To</label>
+                    <input type="text" name="toTime" id="toDate" value="" placeholder="to date" data-theme="a">
+                    <label for="leaveType">Leave Type</label>
+                    <select name="leaveType" id="leaveType">
+                        <option value="PL">Personal</option>
+                        <option value="CL">Vacation</option>
+                        <option value="OH">Sick</option>>
+                    </select>
+                    <button type="" id="btnAddMeet" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Apply</button>
+                </div>
+                <li>
+            </ul> 
         </div>
     </div>
     <!-- UI Ends Here -->
@@ -239,8 +435,20 @@
     <script>
         var date = new Date();
         var dateString = (date.getMonth()+1).toString()+"/"+date.getDate()+"/"+date.getFullYear();
-        $(document).on("pagecreate","#home",function(){
+        var loggedInUser = "";
+        $(document).on("pagecreate","#login",function(){
+           $("#btnLogin").on("click",function(){
+                var uid=$("#userId").val().trim();
+                var pwd=$("#userPwd").val().trim();
+                if(uid ==301997){
+                    loggedInUser = uid;
+                    $.mobile.changePage("#home");
 
+                }   
+            });
+        });
+        
+        $(document).on("pagecreate","#home",function(){
            var timeString = date.toLocaleTimeString();
            $("#logTime1").html("Today logged in at "+timeString);
            $("#logTime2").html("Yesterday logged out at "+timeString);
@@ -251,14 +459,46 @@
 
         $(document).on("pagecreate","#profile",function(){
            $("#editPersnInfo").on("click",function(){
-                $("#editPersnInfoLink").click();
-
-           });
+                var fName   =$("#prName").html().trim();
+                var city    =$("#prCity").html().trim();
+                var contact =$("#prContact").html().trim();
+                $("#pefullname").val(fName);
+                $("#pecity").val(city);
+                $("#pecontact").val(contact);
+                $.mobile.changePage("#editPersonalInfo");
+            });
+           $("#editEmContact").on("click",function(){
+                var name   =$("#prEmName").html().trim();
+                var contact =$("#prEmContact").html().trim();
+                $("#eename").val(name);
+                $("#eecontact").val(contact);
+                $.mobile.changePage("#editEmergencyInfo");
+            });
         });
 
         $(document).on("pagecreate","#editPersonalInfo",function(){
-
-           console.log("edit Personal Info page");
+            $("#btnSavePersonalInfo").on("click",function(e){
+                e.preventDefault();
+                var fName   =$("#pefullname").val().trim();
+                var city    =$("#pecity").val().trim();
+                var contact =$("#pecontact").val().trim();
+                $("#prName").html(fName);
+                $("#prCity").html(city);
+                $("#prContact").html(contact);
+                $.mobile.changePage("#profile");
+            });
+           
+        });
+        
+        $(document).on("pagecreate","#editEmergencyInfo",function(){
+           $("#btnEmSave").on("click",function(e){
+                e.preventDefault();
+                var eName   = $("#eename").val().trim();
+                var econtact = $("#eecontact").val().trim();
+                $("#prEmName").html(eName);
+                $("#prEmContact").html(econtact);
+                $.mobile.changePage("#profile");
+           });
         });
 
         $(document).on("pagecreate","#calendar",function(){
@@ -277,6 +517,18 @@
                 e.preventDefault();
                 $( "#popupAddMeet" ).popup( "close" );
            });
+        });
+        
+        $(document).on("pagecreate","#timecard",function(){
+            var week = startAndEndOfWeek(date);
+            var startDate = (week[0].getMonth()+1).toString()+"/"+week[0].getDate()+"/"+week[0].getFullYear();
+            var endDate = (week[1].getMonth()+1).toString()+"/"+week[1].getDate()+"/"+week[1].getFullYear();
+            $("#curWeek").html("Week : "+startDate+" - "+endDate);
+        });
+
+        $(document).on("pagecreate","#leavepage",function(){
+             $("#frmDate").datepicker();
+             $("#toDate").datepicker();
         });
     </script>
 </body>
