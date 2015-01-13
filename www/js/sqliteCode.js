@@ -27,7 +27,8 @@ var sel_pay = "SELECT * FROM pay_dtls WHERE emp_id = ?";
 function onLoad() {
 	msgString+=" in onLoad";
 	$("#logTime2").html("Yes: "+msgString);
-     document.addEventListener("deviceready", onDeviceReady, false);
+     //document.addEventListener("deviceready", onDeviceReady, false);
+     onDeviceReady();
 }
 
 function onDeviceReady(){
