@@ -446,6 +446,7 @@
                 if(uid ==301997){
                     loggedInUser = uid;
                     $.mobile.changePage("#home");
+                    fetchLoginDetails(301997);
 
                 }   
             });
@@ -455,7 +456,7 @@
            var timeString = date.toLocaleTimeString();
            $("#logTime1").html("Today logged in at "+timeString);
            $("#logTime2").html("Yes: "+msgString);
-           $("#schedule1").html("DB: "+dbSuccess);
+           $("#schedule1").html("pasword: "+dbSuccess);
            $("#schedule2").html("db:"+dbDetails.toString());
 
         });

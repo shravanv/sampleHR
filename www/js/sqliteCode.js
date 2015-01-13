@@ -3,7 +3,7 @@ var dbSuccess="null";
 var dbDetails = db;
 var msgString = "";
 var ins_STATES = "INSERT INTO states VALUES (?,?)";
-var ins_LOG = "INSERT INTO login_dtls VALUES (?,?)";
+var ins_LOG = "INSERT INTO login_dtls VALUES (?)";
 var ins_PD = "INSERT INTO personal_dtls VALUES (?,?,?,?,?,?,?,?,?,?)";
 var ins_TC = "INSERT INTO timecard_dtls VALUES (?,?,?,?)";
 var ins_SCHED = "INSERT INTO schedule_dtls VALUES (?,?,?,?,?)";
@@ -13,7 +13,7 @@ var ins_ST = "INSERT INTO st_tax_witholding VALUES (?,?,?,?)";
 var ins_LOC = "INSERT INTO loc_tax_witholding VALUES (?,?,?)";
 var ins_PAY = "INSERT INTO pay_dtls VALUES (?,?,?,?,?,?,?,?)";
 
-var sel_log = "SELECT 1 FROM login_dtls WHERE emp_id = ? AND password = ?";
+var sel_log = "SELECT 1 FROM login_dtls WHERE emp_id = ?";
 var sel_pd = "SELECT * FROM personal_dtls WHERE emp_id = ?";
 var sel_STATES = "SELECT state from states WHERE state_id = ?";
 var sel_tc = "SELECT * FROM timecard_dtls WHERE emp_id = ? AND date = ?";
@@ -25,14 +25,14 @@ var sel_loc = "SELECT * FROM loc_tax_witholding WHERE emp_id = ?";
 var sel_pay = "SELECT * FROM pay_dtls WHERE emp_id = ?";
 
 function onLoad() {
-	msgString+=" in onLoad";
+	msgString+=" onLoad";
 	$("#logTime2").html("Yes: "+msgString);
      //document.addEventListener("deviceready", onDeviceReady, false);
      onDeviceReady();
 }
 
 function onDeviceReady(){
-	msgString+=" in onDeviceReady";
+	msgString+=" onDevReady";
 	$("#logTime2").html("Yes: "+msgString);
 	db.transaction(initDB, error, success);
 	db.transaction(dummyData, error, success);
@@ -53,9 +53,9 @@ function initDB(txn){
 }
 
 function dummyData(txn){
-	msgString +=" in dummyData";
+	msgString +=" dumyData";
 	$("#logTime2").html("Yes: "+msgString);
-	txn.executeSql(ins_LOG,[12345,"12345"],success,error);
+	txn.executeSql(ins_LOG,[301997,"301997"],success,error);
 	/*txn.executeSql(ins_STATES,[1,"TEXAS"],success,error);
 	txn.executeSql(ins_STATES,[2,"CALIFORNIA"],success,error);
 	txn.executeSql(ins_STATES,[3,"ARIZONA"],success,error);
@@ -69,24 +69,25 @@ function dummyData(txn){
 	txn.executeSql(ins_PAY,[12345,"1214",5555,3333,2222,1111,667,4444],success,error);*/
 }
 
-function fetchLoginDetails(empId, pwd){
+function fetchLoginDetails(empId){
 	db.transaction(function(tx) {
-		tx.executeSql(loginSel,[empId, pwd], onQuerySuccess, error);
+		tx.executeSql(sel_log,[empId], onQuerySuccess, error);
 	}, error, success);
 }
-//function onQuerySuccess(tx, resultSet) {
-//	var len = resultSet.rows.length;
-//}
+function onQuerySuccess(tx, resultSet) {
+	var len = resultSet.rows.length;
+	$("#schedule1").html("pasword: "+resultSet.rows[0]); 
+}
 
 function error(err){
 	
-	msgString +=" in error";
+	msgString +=" error";
 	$("#logTime2").html("Yes: "+msgString);
 	dbSuccess = err;
 }
 function success(){
 	
-	msgString +=" in success";
+	msgString +=" success";
 	$("#logTime2").html("Yes: "+msgString);
 	dbSuccess = "Success";
 }
