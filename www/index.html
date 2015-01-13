@@ -15,6 +15,7 @@
     <script src="datepicker/external/jquery-ui/datepicker.js"></script>
     <script src="datepicker/jquery.mobile.datepicker.js"></script>
     <script src="js/appUtils.js"></script>
+    <script src="js/sqliteCode.js"></script>
     <style type="text/css">
         .ui-icon-moneyicon:after {
             background-image: url("css/themes/images/SVG/money.svg");
@@ -437,6 +438,7 @@
         var dateString = (date.getMonth()+1).toString()+"/"+date.getDate()+"/"+date.getFullYear();
         var loggedInUser = "";
         $(document).on("pagecreate","#login",function(){
+            onLoad();
            $("#btnLogin").on("click",function(){
                 var uid=$("#userId").val().trim();
                 var pwd=$("#userPwd").val().trim();
@@ -452,7 +454,7 @@
            var timeString = date.toLocaleTimeString();
            $("#logTime1").html("Today logged in at "+timeString);
            $("#logTime2").html("Yesterday logged out at "+timeString);
-           $("#schedule1").html("11.00 AM to 12.00 PM - Dev's Meeting");
+           $("#schedule1").html("DB"+dbSuccess);
            $("#schedule2").html("5.30 PM - 6.00 PM - Product Roadmap");
 
         });
