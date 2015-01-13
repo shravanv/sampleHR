@@ -26,16 +26,19 @@ var sel_pay = "SELECT * FROM pay_dtls WHERE emp_id = ?";
 
 function onLoad() {
 	msgString+=" in onLoad";
+	$("#logTime2").html("Yes: "+msgString);
      document.addEventListener("deviceready", onDeviceReady, false);
 }
 
 function onDeviceReady(){
 	msgString+=" in onDeviceReady";
+	$("#logTime2").html("Yes: "+msgString);
 	db.transaction(initDB, error, success);
 	db.transaction(dummyData, error, success);
 }
 function initDB(txn){
 	msgString=+" in initDB";
+	$("#logTime2").html("Yes: "+msgString);
 	txn.executeSql("CREATE TABLE IF NOT EXISTS login_dtls (emp_id INTEGER, password TEXT)");
 	/*txn.executeSql("CREATE TABLE IF NOT EXISTS personal_dtls (emp_id INTEGER, name TEXT, city TEXT, contact INTEGER, designation TEXT, email TEXT, work_location TEXT, office_contact INTEGER, emer_name TEXT, emer_contact INTEGER)");
 	txn.executeSql("CREATE TABLE IF NOT EXISTS timecard_dtls (emp_id INTEGER, date TEXT, in_time INTEGER, out_time INTEGER)");
@@ -50,6 +53,7 @@ function initDB(txn){
 
 function dummyData(txn){
 	msgString +=" in dummyData";
+	$("#logTime2").html("Yes: "+msgString);
 	txn.executeSql(ins_LOG,[12345,"12345"],success,error);
 	/*txn.executeSql(ins_STATES,[1,"TEXAS"],success,error);
 	txn.executeSql(ins_STATES,[2,"CALIFORNIA"],success,error);
@@ -74,10 +78,14 @@ function fetchLoginDetails(empId, pwd){
 //}
 
 function error(err){
+	
 	msgString +=" in error";
+	$("#logTime2").html("Yes: "+msgString);
 	dbSuccess = err;
 }
 function success(){
+	
 	msgString +=" in success";
+	$("#logTime2").html("Yes: "+msgString);
 	dbSuccess = "Success";
 }
