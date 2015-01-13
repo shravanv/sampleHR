@@ -25,12 +25,12 @@ var sel_loc = "SELECT * FROM loc_tax_witholding WHERE emp_id = ?";
 var sel_pay = "SELECT * FROM pay_dtls WHERE emp_id = ?";
 
 function onLoad() {
-	msgString=+" in onLoad";
+	msgString+=" in onLoad";
      document.addEventListener("deviceready", onDeviceReady, false);
 }
 
 function onDeviceReady(){
-	msgString=+" in onDeviceReady";
+	msgString+=" in onDeviceReady";
 	db.transaction(initDB, error, success);
 	db.transaction(dummyData, error, success);
 }
@@ -49,7 +49,7 @@ function initDB(txn){
 }
 
 function dummyData(txn){
-	msgString=+" in dummyData";
+	msgString +=" in dummyData";
 	txn.executeSql(ins_LOG,[12345,"12345"],success,error);
 	/*txn.executeSql(ins_STATES,[1,"TEXAS"],success,error);
 	txn.executeSql(ins_STATES,[2,"CALIFORNIA"],success,error);
@@ -74,10 +74,10 @@ function fetchLoginDetails(empId, pwd){
 //}
 
 function error(err){
-	msgString=+" in error";
+	msgString +=" in error";
 	dbSuccess = err;
 }
 function success(){
-	msgString=+" in success";
+	msgString +=" in success";
 	dbSuccess = "Success";
 }
