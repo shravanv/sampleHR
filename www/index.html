@@ -48,7 +48,7 @@
         
     </style>
 </head>
-<body>
+<body onload="onLoad()">
     <!-- login page -->
     <div data-role="page" id="login" class="login" data-theme="a">
         <div style="margin-top:14%; padding:15%"data-role="main" class="ui-content">
@@ -439,7 +439,7 @@
         var dateString = (date.getMonth()+1).toString()+"/"+date.getDate()+"/"+date.getFullYear();
         var loggedInUser = "";
         $(document).on("pagecreate","#login",function(){
-            onLoad();
+            
            $("#btnLogin").on("click",function(){
                 var uid=$("#userId").val().trim();
                 var pwd=$("#userPwd").val().trim();
@@ -456,7 +456,7 @@
            $("#logTime1").html("Today logged in at "+timeString);
            $("#logTime2").html("Yes: "+msgString);
            $("#schedule1").html("DB: "+dbSuccess);
-           $("#schedule2").html("db:"+dbDetails);
+           $("#schedule2").html("db:"+dbDetails.toString());
 
         });
 
