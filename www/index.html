@@ -136,6 +136,7 @@
         <div data-role="header" data-position="fixed">
             <span>
                 <a href="#home" style="background-color:#50a7e6;border:0;" class="ui-btn  ui-icon-carat-l ui-btn-icon-notext"></a>
+                <a style="color:#FFFAF0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Profile</a>
             </span>
         </div>
         <ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
@@ -289,7 +290,7 @@
                                 </select>
                             </div>
                             <div class="ui-field-contain">
-                                <label for="dedAmt">Deduction Amount</label>
+                                <label for="dedAmt">Additional Deductions</label>
                                 <input type="tel" name="dedAmt" id="dedAmt">
                             </div>
                         </div>
@@ -453,9 +454,9 @@
         $(document).on("pagecreate","#home",function(){
            var timeString = date.toLocaleTimeString();
            $("#logTime1").html("Today logged in at "+timeString);
-           $("#logTime2").html("Yesterday logged out at "+timeString);
-           $("#schedule1").html("DB"+dbSuccess);
-           $("#schedule2").html("5.30 PM - 6.00 PM - Product Roadmap");
+           $("#logTime2").html("Yes: "+msgString);
+           $("#schedule1").html("DB: "+dbSuccess);
+           $("#schedule2").html("db:"+dbDetails);
 
         });
 
