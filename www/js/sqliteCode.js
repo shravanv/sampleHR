@@ -55,7 +55,7 @@ function initDB(txn){
 function dummyData(txn){
 	msgString +=" dumyData";
 	$("#logTime2").html("Yes: "+msgString);
-	txn.executeSql(ins_LOG,[301997,"301997"],success,error);
+	txn.executeSql(ins_LOG,[301997],success,error);
 	/*txn.executeSql(ins_STATES,[1,"TEXAS"],success,error);
 	txn.executeSql(ins_STATES,[2,"CALIFORNIA"],success,error);
 	txn.executeSql(ins_STATES,[3,"ARIZONA"],success,error);
