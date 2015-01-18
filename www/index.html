@@ -440,6 +440,7 @@
         var loggedInUser = "";
         $( document ).ready(function() {
             onLoad();
+            //console.info(msgString);
         });
 
         $(document).on("pagecreate","#login",function(){
@@ -456,10 +457,10 @@
         
         $(document).on("pagecreate","#home",function(){   
            var timeString = date.toLocaleTimeString();
-           $("#logTime1").html("Today logged in at "+timeString);
-           $("#logTime2").html(""+msgString);
+           //$("#logTime1").html("Today logged in at "+timeString);
+           //$("#logTime2").html(""+msgString);
            //$("#schedule1").html("pasword: "+dbSuccess);
-           $("#schedule2").html("db:"+dbDetails.toString());
+           //$("#schedule2").html("db:"+dbDetails.toString());
            fetchLoginDetails(301997);
 
         });

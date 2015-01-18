@@ -1,6 +1,6 @@
-var db = window.openDatabase("myDB","1.0","myDB",1000000);
+
 var dbSuccess="null";
-var dbDetails = db;
+//var dbDetails = db;
 var msgString = "";
 var ins_STATES = "INSERT INTO states VALUES (?,?)";
 var ins_LOG = "INSERT INTO login_dtls VALUES (?,?)";
@@ -25,13 +25,13 @@ var sel_loc = "SELECT * FROM loc_tax_witholding WHERE emp_id = ?";
 var sel_pay = "SELECT * FROM pay_dtls WHERE emp_id = ?";
 
 function onLoad() {
-	msgString+=" onLoad";
-	$("#logTime2").html(""+msgString);
+	//msgString+=" onLoad";
+	//$("#logTime2").html(""+msgString);
      //document.addEventListener("deviceready", onDeviceReady, false);
      onDeviceReady();
 }
 
-function onDeviceReady(){
+/*function onDeviceReady(){
 	msgString+=" onDevReady";
 	$("#logTime2").html(""+msgString);
 	db.transaction(initDB, error, success);
@@ -41,7 +41,7 @@ function initDB(txn){
 	msgString=+" in initDB";
 	$("#logTime2").html(""+msgString);
 	txn.executeSql("CREATE TABLE IF NOT EXISTS login_dtls (emp_id INTEGER, password TEXT)");
-	/*txn.executeSql("CREATE TABLE IF NOT EXISTS personal_dtls (emp_id INTEGER, name TEXT, city TEXT, contact INTEGER, designation TEXT, email TEXT, work_location TEXT, office_contact INTEGER, emer_name TEXT, emer_contact INTEGER)");
+	txn.executeSql("CREATE TABLE IF NOT EXISTS personal_dtls (emp_id INTEGER, name TEXT, city TEXT, contact INTEGER, designation TEXT, email TEXT, work_location TEXT, office_contact INTEGER, emer_name TEXT, emer_contact INTEGER)");
 	txn.executeSql("CREATE TABLE IF NOT EXISTS timecard_dtls (emp_id INTEGER, date TEXT, in_time INTEGER, out_time INTEGER)");
 	txn.executeSql("CREATE TABLE IF NOT EXISTS schedule_dtls (emp_id INTEGER , date TEXT , start_time INTEGER , end_time INTEGER , description TEXT)");
 	txn.executeSql("CREATE TABLE IF NOT EXISTS leave_dtls (emp_id INTEGER , date TEXT , leave_type INTEGER)");
@@ -49,14 +49,14 @@ function initDB(txn){
 	txn.executeSql("CREATE TABLE IF NOT EXISTS st_tax_witholding (emp_id INTEGER, worked_state INTEGER, lived_state INTEGER, SUISDI INTEGER)");
 	txn.executeSql("CREATE TABLE IF NOT EXISTS loc_tax_witholding (emp_id INTEGER, worked_loc INTEGER, lived_loc INTEGER)");
 	txn.executeSql("CREATE TABLE IF NOT EXISTS pay_dtls (emp_id INTEGER, month_year TEXT, gross_pay REAL, regular REAL, tax REAL, other REAL, garnishment REAL, take_home REAL)");
-	txn.executeSql("CREATE TABLE IF NOT EXISTS states (state_id INTEGER, state TEXT)");*/
+	txn.executeSql("CREATE TABLE IF NOT EXISTS states (state_id INTEGER, state TEXT)");
 }
 
 function dummyData(txn){
 	msgString +=" dumyData";
 	$("#logTime2").html(""+msgString);
 	txn.executeSql(ins_LOG,[301997,"pwd4app"],success,error);
-	/*txn.executeSql(ins_STATES,[1,"TEXAS"],success,error);
+	txn.executeSql(ins_STATES,[1,"TEXAS"],success,error);
 	txn.executeSql(ins_STATES,[2,"CALIFORNIA"],success,error);
 	txn.executeSql(ins_STATES,[3,"ARIZONA"],success,error);
 	txn.executeSql(ins_PD,[12345,"Tom","New York",9988778866,"Sr.Exec.","tom@adpi.com","New York",9988778866,"Alex",9878768765],success,error);
@@ -66,7 +66,7 @@ function dummyData(txn){
 	txn.executeSql(ins_FED,[12345,"Married",1480,9876],success,error);
 	txn.executeSql(ins_ST,[12345,1,2,1],success,error);
 	txn.executeSql(ins_LOC,[12345,1,2],success,error);
-	txn.executeSql(ins_PAY,[12345,"1214",5555,3333,2222,1111,667,4444],success,error);*/
+	txn.executeSql(ins_PAY,[12345,"1214",5555,3333,2222,1111,667,4444],success,error);
 }
 
 function fetchLoginDetails(empId){
@@ -83,6 +83,7 @@ function error(err){
 	
 	msgString +=" error";
 	$("#logTime2").html(""+msgString);
+
 	dbSuccess = err;
 }
 function success(){
@@ -90,4 +91,52 @@ function success(){
 	msgString +=" success";
 	$("#logTime2").html(""+msgString);
 	dbSuccess = "Success";
+}*/
+function onDeviceReady() {
+		var db = window.openDatabase("TestDB", "1.0", "TestDB", 200000);
+        db.transaction(populateDB, errorCB, successCB);
+}
+
+function populateDB(tx) {
+     tx.executeSql('DROP TABLE IF EXISTS LOGIN');
+     tx.executeSql('CREATE TABLE IF NOT EXISTS LOGIN (id unique, password)');
+     tx.executeSql('INSERT INTO LOGIN (id, data) VALUES (301997, "adphyd")');
+     tx.executeSql('INSERT INTO LOGIN (id, data) VALUES (301998, "adpind")');
+}
+
+// Transaction error callback
+//
+function errorCB(tx, err) {
+    console.info("Error processing SQL: "+err);
+    $("#logTime2").html("pc_error: "+err);
+
+}
+
+// Transaction success callback
+//
+function successCB() {
+    $("#logTime1").html("insert success");
+}
+
+function fetchLoginDetails(empId){
+	var db = window.openDatabase("TestDB", "1.0", "TestDB", 200000);
+	db.transaction(queryDB, errorCB);
+}
+
+function queryDB(tx) {
+    tx.executeSql('SELECT * FROM LOGIN', [], onQuerySuccess, onQueryFail);
+}
+
+function onQuerySuccess(tx, resultSet) {
+	var len = resultSet.rows.length;
+	$("#schedule1").html("pasword: "+resultSet.rows[0].password); 
+}
+
+function onQueryFail(tx, err) {
+	var len = resultSet.rows.length;
+	$("#schedule2").html("fetch fail: "+err); 
+}
+
+function error(err){
+	$("#logTime2").html(""+msgString);
 }
