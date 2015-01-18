@@ -100,8 +100,8 @@ function onDeviceReady() {
 function populateDB(tx) {
      tx.executeSql('DROP TABLE IF EXISTS LOGIN');
      tx.executeSql('CREATE TABLE IF NOT EXISTS LOGIN (id unique, password)');
-     tx.executeSql('INSERT INTO LOGIN (id, data) VALUES (301997, "adphyd")');
-     tx.executeSql('INSERT INTO LOGIN (id, data) VALUES (301998, "adpind")');
+     tx.executeSql('INSERT INTO LOGIN (id, password) VALUES (301997, "adphyd")');
+     tx.executeSql('INSERT INTO LOGIN (id, password) VALUES (301998, "adpind")');
 }
 
 // Transaction error callback
