@@ -3,7 +3,7 @@ var dbSuccess="null";
 var dbDetails = db;
 var msgString = "";
 var ins_STATES = "INSERT INTO states VALUES (?,?)";
-var ins_LOG = "INSERT INTO login_dtls VALUES (?)";
+var ins_LOG = "INSERT INTO login_dtls VALUES (?,?)";
 var ins_PD = "INSERT INTO personal_dtls VALUES (?,?,?,?,?,?,?,?,?,?)";
 var ins_TC = "INSERT INTO timecard_dtls VALUES (?,?,?,?)";
 var ins_SCHED = "INSERT INTO schedule_dtls VALUES (?,?,?,?,?)";
@@ -33,13 +33,13 @@ function onLoad() {
 
 function onDeviceReady(){
 	msgString+=" onDevReady";
-	$("#logTime2").html("Yes: "+msgString);
+	$("#logTime2").html(""+msgString);
 	db.transaction(initDB, error, success);
 	db.transaction(dummyData, error, success);
 }
 function initDB(txn){
 	msgString=+" in initDB";
-	$("#logTime2").html("Yes: "+msgString);
+	$("#logTime2").html(""+msgString);
 	txn.executeSql("CREATE TABLE IF NOT EXISTS login_dtls (emp_id INTEGER, password TEXT)");
 	/*txn.executeSql("CREATE TABLE IF NOT EXISTS personal_dtls (emp_id INTEGER, name TEXT, city TEXT, contact INTEGER, designation TEXT, email TEXT, work_location TEXT, office_contact INTEGER, emer_name TEXT, emer_contact INTEGER)");
 	txn.executeSql("CREATE TABLE IF NOT EXISTS timecard_dtls (emp_id INTEGER, date TEXT, in_time INTEGER, out_time INTEGER)");
@@ -54,8 +54,8 @@ function initDB(txn){
 
 function dummyData(txn){
 	msgString +=" dumyData";
-	$("#logTime2").html("Yes: "+msgString);
-	txn.executeSql(ins_LOG,[301997,"301997"],success,error);
+	$("#logTime2").html(""+msgString);
+	txn.executeSql(ins_LOG,[301997,"pwd4app"],success,error);
 	/*txn.executeSql(ins_STATES,[1,"TEXAS"],success,error);
 	txn.executeSql(ins_STATES,[2,"CALIFORNIA"],success,error);
 	txn.executeSql(ins_STATES,[3,"ARIZONA"],success,error);
@@ -76,7 +76,7 @@ function fetchLoginDetails(empId){
 }
 function onQuerySuccess(tx, resultSet) {
 	var len = resultSet.rows.length;
-	$("#schedule1").html("pasword: "+resultSet.rows[0]); 
+	$("#schedule1").html("pasword: "+resultSet.rows[0].password); 
 }
 
 function error(err){
