@@ -26,7 +26,7 @@ var sel_pay = "SELECT * FROM pay_dtls WHERE emp_id = ?";
 
 function onLoad() {
 	msgString+=" onLoad";
-	$("#logTime2").html("Yes: "+msgString);
+	$("#logTime2").html(""+msgString);
      //document.addEventListener("deviceready", onDeviceReady, false);
      onDeviceReady();
 }
@@ -82,12 +82,12 @@ function onQuerySuccess(tx, resultSet) {
 function error(err){
 	
 	msgString +=" error";
-	$("#logTime2").html("Yes: "+msgString);
+	$("#logTime2").html(""+msgString);
 	dbSuccess = err;
 }
 function success(){
 	
 	msgString +=" success";
-	$("#logTime2").html("Yes: "+msgString);
+	$("#logTime2").html(""+msgString);
 	dbSuccess = "Success";
 }

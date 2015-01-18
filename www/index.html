@@ -48,7 +48,7 @@
         
     </style>
 </head>
-<body onload="onLoad()">
+<body>
     <!-- login page -->
     <div data-role="page" id="login" class="login" data-theme="a">
         <div style="margin-top:14%; padding:15%"data-role="main" class="ui-content">
@@ -438,6 +438,10 @@
         var date = new Date();
         var dateString = (date.getMonth()+1).toString()+"/"+date.getDate()+"/"+date.getFullYear();
         var loggedInUser = "";
+        $( document ).ready(function() {
+            onLoad();
+        });
+
         $(document).on("pagecreate","#login",function(){
             
            $("#btnLogin").on("click",function(){
@@ -446,18 +450,17 @@
                 if(uid ==301997){
                     loggedInUser = uid;
                     $.mobile.changePage("#home");
-                    fetchLoginDetails(301997);
-
                 }   
             });
         });
         
-        $(document).on("pagecreate","#home",function(){
+        $(document).on("pagecreate","#home",function(){   
            var timeString = date.toLocaleTimeString();
            $("#logTime1").html("Today logged in at "+timeString);
-           $("#logTime2").html("Yes: "+msgString);
-           $("#schedule1").html("pasword: "+dbSuccess);
+           $("#logTime2").html(""+msgString);
+           //$("#schedule1").html("pasword: "+dbSuccess);
            $("#schedule2").html("db:"+dbDetails.toString());
+           fetchLoginDetails(301997);
 
         });
 
