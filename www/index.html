@@ -16,6 +16,7 @@
     <script src="datepicker/jquery.mobile.datepicker.js"></script>
     <script src="js/appUtils.js"></script>
     <script src="js/sqliteCode.js"></script>
+    <script src="js/appCode.js"></script>
     <style type="text/css">
         .ui-icon-moneyicon:after {
             background-image: url("css/themes/images/SVG/money.svg");
@@ -54,7 +55,8 @@
         <div style="margin-top:14%; padding:15%"data-role="main" class="ui-content">
             <input type="text" name="log" id="userId" placeholder="userid" class="loginInput" value="" ></input>
             <input type="password" name="pwd" id="userPwd" placeholder="password" class="loginInput" value=""></input>
-            <button style="margin-left:25%" class="ui-btn ui-btn-inline ui-corner-all" id="btnLogin">Login</button> 
+            <button style="margin-left:25%" class="ui-btn ui-btn-inline ui-corner-all" id="btnLogin">Login</button>
+            <label id="invalidLogin" style="margin-left:25%;color:red;font-weight:bold;display:none;">Invalide Credentials</label> 
         </div >
     </div>
     <!-- Home Page -->
@@ -149,10 +151,10 @@
             </li>
             <li class="ui-li-static ui-body-inherit ">
                 <h3>Work Info</h3>
-                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-star ui-btn-icon-notext"></a><strong>Member Technical, NAS GPT</strong></p>
-                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-mail ui-btn-icon-notext"></a><strong>shravan.varala@adp.com</strong></p>
-                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-location ui-btn-icon-notext"></a><strong>Hyderabad, India</strong></p>
-                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-phone ui-btn-icon-notext"></a><strong>040-64648457</strong></p>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-star ui-btn-icon-notext"></a><strong id="prDesg">Member Technical, NAS GPT</strong></p>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-mail ui-btn-icon-notext"></a><strong id="peEmail">shravan.varala@adp.com</strong></p>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-location ui-btn-icon-notext"></a><strong id="prWrkLcn">Hyderabad, India</strong></p>
+                <p><a class="ui-btn ui-btn-inline ui-corner-all ui-icon-phone ui-btn-icon-notext"></a><strong id="prOffcCntct">040-64648457</strong></p>
                 <p class="ui-li-aside"></p>
             </li>
             <li class="ui-li-static ui-body-inherit ui-last-child">
@@ -271,82 +273,103 @@
         <div data-role="main" class="ui-content">
             <ul data-role="listview" data-inset="true">
               <li style="background-color:burlywood;" data-role="list-divider">Pay Details</li>
-              <li data-icon="false"><a href="#">Gross Pay&nbsp;&nbsp;  : $45889678.0</a></li>
-              <li data-icon="false"><a href="#">Basic Pay  &nbsp;&nbsp;: $897456.0</a></li>
-              <li data-icon="false"><a href="#">Retierment &nbsp; : 12256.0</a></li>
-              <li data-icon="false"><a href="#">Tax      &nbsp;&nbsp;&nbsp;&nbsp;  : $4598.0</a></li>
-              <li data-icon="false"><a href="#">Take Home&nbsp;&nbsp;  : $4598.0</a></li>
-              <li style="background-color:burlywood;" data-role="list-divider">Tax withholding</li>
               <li>
-                    <div data-role="collapsibleset">
-                        <div data-role="collapsible">
-                            <h3>Federal</h3>
-                            <div class="ui-field-contain">
-                                <label for="marStatus">Marital Status</label>
-                                <select name="marStatus" id="marStatus">
-                                    <option value="mon">Single</option>
-                                    <option value="tue">Married</option>
-                                    <option value="wed">Divorced</option>>
-                                </select>
-                            </div>
-                            <div class="ui-field-contain">
-                                <label for="dedAmt">Additional Deductions</label>
-                                <input type="tel" name="dedAmt" id="dedAmt">
-                            </div>
-                        </div>
-                        <div data-role="collapsible">
-                            <h3>State</h3>
-                            <div class="ui-field-contain">
-                                <label for="stWrkdIn">State Worked In</label>
-                                <select name="stWrkdIn" id="stWrkdIn">
-                                    <option value="AL">Alabama</option>
-                                    <option value="IN">Indiana</option>
-                                    <option value="NY">New York</option>
-                                    <option value="OH">Ohio</option>>
-                                </select>
-                            </div> 
-                            <div class="ui-field-contain">
-                                <label for="stLvdIn">State Lived In</label>
-                                <select name="stLvdIn" id="stLvdIn">
-                                    <option value="AL">Alabama</option>
-                                    <option value="IN">Indiana</option>
-                                    <option value="NY">New York</option>
-                                    <option value="OH">Ohio</option>>
-                                </select>
-                            </div>
-                            <div class="ui-field-contain">
-                                <label for="suSDI">School District (SUI/SDI)</label>
-                                <select name="suSDI" id="suSDI">
-                                    <option value="AL">Alabama</option>
-                                    <option value="IN">Indiana</option>
-                                    <option value="NY">New York</option>
-                                    <option value="OH">Ohio</option>>
-                                </select>
-                            </div>
-                        </div>
-                        <div data-role="collapsible">
-                            <h3>Local</h3>
-                            <div class="ui-field-contain">
-                                <label for="lvdLocal">LivedIn Local</label>
-                                <select name="lvdLocal" id="lvdLocal">
-                                    <option value="AL">Alabama</option>
-                                    <option value="IN">Indiana</option>
-                                    <option value="NY">New York</option>
-                                    <option value="OH">Ohio</option>>
-                                </select>
-                            </div>
-                            <div class="ui-field-contain">
-                                <label for="wrkLocal">WorkedIn Local</label>
-                                <select name="wrkLocal" id="wrkLocal">
-                                    <option value="AL">Alabama</option>
-                                    <option value="IN">Indiana</option>
-                                    <option value="NY">New York</option>
-                                    <option value="OH">Ohio</option>>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="ui-grid-a">
+                      <div class="ui-block-a" style="border:1px  ;"><span>Gross Pay</span></div>
+                      <div class="ui-block-b" style="border:1px  ;"><span id="pygross">$45889678.0</span></div>
+                      <div class="ui-block-a" style="border:1px  ;"><span>Regular Pay</span></div>
+                      <div class="ui-block-b" style="border:1px  ;"><span id="pyregular">$897456.0</span></div>
+                      <div class="ui-block-a" style="border:1px  ;"><span>Tax</span></div>
+                      <div class="ui-block-b" style="border:1px  ;"><span id="pytax">$4598.0</span></div>
+                      <div class="ui-block-a" style="border:1px  ;"><span>Other</span></div>
+                      <div class="ui-block-b" style="border:1px  ;"><span id="pyother">$4598.0</span></div>
+                      <div class="ui-block-a" style="border:1px  ;"><span>Garnishment</span></div>
+                      <div class="ui-block-b" style="border:1px  ;"><span id="pygarnish">$4598.0</span></div>
+                      <div class="ui-block-a" style="border:1px  ;"><span>Take Home</span></div>
+                      <div class="ui-block-b" style="border:1px  ;"><span id="pytakehome">$4598.0</span></div>
                     </div>
               </li>
+            </ul>
+            <ul data-role="listview" data-inset="true">
+                <li style="background-color:burlywood;" data-role="list-divider">Tax withholding</li>
+                  <li>
+                        <div data-role="collapsibleset">
+                            <div data-role="collapsible">
+                                <h3>Federal</h3>
+                                <div class="ui-field-contain">
+                                    <label for="marStatus">Marital Status</label>
+                                    <select name="marStatus" id="marStatus">
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Divorced">Divorced</option>
+                                    </select>
+                                </div>
+                                <div class="ui-field-contain">
+                                    <label for="exemAmt">Exemptions</label>
+                                    <input type="tel" name="exemAmt" id="exemAmt">
+                                </div>
+                                <div class="ui-field-contain">
+                                    <label for="addWhAmt">Additional Withholdings</label>
+                                    <input type="tel" name="addWhAmt" id="addWhAmt">
+                                </div>
+                            </div>
+                            <div data-role="collapsible">
+                                <h3>State</h3>
+                                <div class="ui-field-contain">
+                                    <label for="stWrkdIn">State Worked In</label>
+                                    <select name="stWrkdIn" id="stWrkdIn">
+                                        <option value="Alabama">Alabama</option>
+                                        <option value="Arizona">Arizona</option>
+                                        <option value="Indiana">Indiana</option>
+                                        <option value="New York">New York</option>
+                                        <option value="Ohio">Ohio</option>
+                                    </select>
+                                </div> 
+                                <div class="ui-field-contain">
+                                    <label for="stLvdIn">State Lived In</label>
+                                    <select name="stLvdIn" id="stLvdIn">
+                                        <option value="Alabama">Alabama</option>
+                                        <option value="Arizona">Arizona</option>
+                                        <option value="Indiana">Indiana</option>
+                                        <option value="New York">New York</option>
+                                        <option value="Ohio">Ohio</option>
+                                    </select>
+                                </div>
+                                <div class="ui-field-contain">
+                                    <label for="suSDI">School District (SUI/SDI)</label>
+                                    <select name="suSDI" id="suSDI">
+                                        <option value="Alabama">Alabama</option>
+                                        <option value="Arizona">Arizona</option>
+                                        <option value="Indiana">Indiana</option>
+                                        <option value="New York">New York</option>
+                                        <option value="Ohio">Ohio</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div data-role="collapsible">
+                                <h3>Local</h3>
+                                <div class="ui-field-contain">
+                                    <label for="lvdLocal">LivedIn Local</label>
+                                    <select name="lvdLocal" id="lvdLocal">
+                                        <option value="3901-Philadelphia">3901-Philadelphia</option>
+                                        <option value="109F-Kansas City MO">109F-Kansas City MO</option>
+                                        <option value="1801-Louisville KY">1801-Louisville KY</option>
+                                        <option value="2075-Vigo County IN">2075-Vigo County IN</option>
+                                    </select>
+                                </div>
+                                <div class="ui-field-contain">
+                                    <label for="wrkLocal">WorkedIn Local</label>
+                                    <select name="wrkLocal" id="wrkLocal">
+                                        <option value="3901-Philadelphia">3901-Philadelphia</option>
+                                        <option value="109F-Kansas City MO">109F-Kansas City MO</option>
+                                        <option value="1801-Louisville KY">1801-Louisville KY</option>
+                                        <option value="2075-Vigo County IN">2075-Vigo County IN</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div><a href="#" data-role="button" data-icon="check" id="btnSaveTaxWh">Save Changes</a></div>
+                  </li> 
             </ul> 
         </div>
     </div>
@@ -410,9 +433,16 @@
         <div data-role="main" class="ui-content">
             <ul data-role="listview" data-inset="true">
               <li style="background-color:burlywood;" data-role="list-divider">Available Leaves</li>
-              <li data-icon="false">Vacation Leaves&nbsp;&nbsp;:&nbsp; 10</li>
-              <li data-icon="false">Personal Leaves&nbsp;&nbsp;:&nbsp; 6</li>
-              <li data-icon="false">Sick Leves &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;2</li>
+              <li>
+                    <div class="ui-grid-a">
+                      <div class="ui-block-a" style="border:1px  ;"><span>Vacation Leaves</span></div>
+                      <div class="ui-block-b" style="border:1px  ;"><span id="vacLeaves">10</span></div>
+                      <div class="ui-block-a" style="border:1px  ;"><span>Personal Leaves</span></div>
+                      <div class="ui-block-b" style="border:1px  ;"><span id="perLeaves">6</span></div>
+                      <div class="ui-block-a" style="border:1px  ;"><span>Sick Leves</span></div>
+                      <div class="ui-block-b" style="border:1px  ;"><span id="sickLeaves">2</span></div>
+                    </div>
+              </li>
               <li style="background-color:burlywood;" data-role="list-divider">Apply Leave</li>
               <li>
                     <div style="padding:10px 20px;">
@@ -438,34 +468,37 @@
         var date = new Date();
         var dateString = (date.getMonth()+1).toString()+"/"+date.getDate()+"/"+date.getFullYear();
         var loggedInUser = "";
+        var profileObj = {};
+        var payObj = {};
+        var db = window.openDatabase("TestDB", "1.0", "TestDB", 200000);
         $( document ).ready(function() {
             onLoad();
             //console.info(msgString);
         });
-
         $(document).on("pagecreate","#login",function(){
             
            $("#btnLogin").on("click",function(){
                 var uid=$("#userId").val().trim();
                 var pwd=$("#userPwd").val().trim();
-                if(uid ==301997){
+                if(uid != null && uid !="" && pwd !=null && pwd !=""){
                     loggedInUser = uid;
-                    $.mobile.changePage("#home");
-                }   
+                    authenticate();
+                }
             });
         });
         
         $(document).on("pagecreate","#home",function(){   
            var timeString = date.toLocaleTimeString();
-           //$("#logTime1").html("Today logged in at "+timeString);
-           //$("#logTime2").html(""+msgString);
-           //$("#schedule1").html("pasword: "+dbSuccess);
-           //$("#schedule2").html("db:"+dbDetails.toString());
-           fetchLoginDetails(301997);
-
+           payMethods.fetchDetails();
+           $("#logTime1").html("Today logged in at "+timeString);
+           $("#logTime2").html("");
+           $("#schedule1").html("10.00 AM Dev Meeting");
+           $("#schedule2").html("11.00 AM Release Planning");
         });
 
         $(document).on("pagecreate","#profile",function(){
+            profile.fetchDetails();
+            
            $("#editPersnInfo").on("click",function(){
                 var fName   =$("#prName").html().trim();
                 var city    =$("#prCity").html().trim();
@@ -490,10 +523,14 @@
                 var fName   =$("#pefullname").val().trim();
                 var city    =$("#pecity").val().trim();
                 var contact =$("#pecontact").val().trim();
+                profileObj.name = fName;
+                profileObj.city = city;
+                profileObj.contact = contact;
                 $("#prName").html(fName);
                 $("#prCity").html(city);
                 $("#prContact").html(contact);
-                $.mobile.changePage("#profile");
+                //$.mobile.changePage("#profile");
+                profile.updateDetails();
             });
            
         });
@@ -502,11 +539,31 @@
            $("#btnEmSave").on("click",function(e){
                 e.preventDefault();
                 var eName   = $("#eename").val().trim();
-                var econtact = $("#eecontact").val().trim();
+                var eContact = $("#eecontact").val().trim();
+                profileObj.emer_name = eName;
+                profileObj.emer_contact = eContact;
                 $("#prEmName").html(eName);
-                $("#prEmContact").html(econtact);
-                $.mobile.changePage("#profile");
+                $("#prEmContact").html(eContact);
+                profile.updateDetails();
            });
+        });
+
+        $(document).on("pagecreate","#paypage",function(){
+            payMethods.populateData();
+            
+            $("#btnSaveTaxWh").on("click",function(e){
+                e.preventDefault();
+                payObj.marital_status = $("#marStatus").val().trim();
+                payObj.exemptions =  $("#exemAmt").val().trim();;
+                payObj.addnl_witholdings =  $("#addWhAmt").val().trim();
+                payObj.worked_state = $("#stWrkdIn").val().trim();
+                payObj.lived_state = $("#stLvdIn").val().trim();
+                payObj.suisdi = $("#suSDI").val().trim();
+                payObj.lived_loc = $("#lvdLocal").val().trim();
+                payObj.worked_loc = $("#wrkLocal").val().trim();
+                //$.mobile.changePage("#profile");
+                payMethods.updateDetails();
+            });
         });
 
         $(document).on("pagecreate","#calendar",function(){
