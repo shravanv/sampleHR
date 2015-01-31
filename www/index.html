@@ -116,9 +116,9 @@
           <li data-icon="false">
             <a href="#"><img src="css/themes/images/tasksIcon.png">
                 <h2 class="">You Have</h2>
-                <p class=""><strong id="logTime1">10 Vacation</strong></p>
-                <p class=""><strong id="logTime2">6 Personal</strong></p>
-                <p class=""><strong id="logTime2"><span>2<span> Sick</strong></p>
+                <p class=""><strong id="hmPLeaves">10 Privilege Leaves</strong></p>
+                <p class=""><strong id="hmCLeaves">6 Casual Leaves</strong></p>
+                <p class=""><strong id="hmSLeaves">5 Sick Leaves</strong></p>
             </a>
           </li>
           <li data-icon="false">
@@ -435,12 +435,12 @@
               <li style="background-color:burlywood;" data-role="list-divider">Available Leaves</li>
               <li>
                     <div class="ui-grid-a">
-                      <div class="ui-block-a" style="border:1px  ;"><span>Vacation Leaves</span></div>
-                      <div class="ui-block-b" style="border:1px  ;"><span id="vacLeaves">10</span></div>
-                      <div class="ui-block-a" style="border:1px  ;"><span>Personal Leaves</span></div>
-                      <div class="ui-block-b" style="border:1px  ;"><span id="perLeaves">6</span></div>
-                      <div class="ui-block-a" style="border:1px  ;"><span>Sick Leves</span></div>
-                      <div class="ui-block-b" style="border:1px  ;"><span id="sickLeaves">2</span></div>
+                      <div class="ui-block-a" style="border:1px  ;"><span>Privilege Leaves (PL)</span></div>
+                      <div class="ui-block-b" style="border:1px  ;"><span id="prLeaves">10</span></div>
+                      <div class="ui-block-a" style="border:1px  ;"><span>Casual Leaves (CL)</span></div>
+                      <div class="ui-block-b" style="border:1px  ;"><span id="caLeaves">6</span></div>
+                      <div class="ui-block-a" style="border:1px  ;"><span>Sick Leves (SL)</span></div>
+                      <div class="ui-block-b" style="border:1px  ;"><span id="siLeaves">2</span></div>
                     </div>
               </li>
               <li style="background-color:burlywood;" data-role="list-divider">Apply Leave</li>
@@ -452,15 +452,40 @@
                     <input type="text" name="toTime" id="toDate" value="" placeholder="to date" data-theme="a">
                     <label for="leaveType">Leave Type</label>
                     <select name="leaveType" id="leaveType">
-                        <option value="PL">Personal</option>
-                        <option value="CL">Vacation</option>
-                        <option value="OH">Sick</option>>
+                        <option value="Privilege">Privilege</option>
+                        <option value="Casual">Casual</option>
+                        <option value="Sick">Sick</option>>
                     </select>
-                    <button type="" id="btnAddMeet" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Apply</button>
+                    <button type="" id="btnApplyLeave" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Apply</button>
                 </div>
                 <li>
+            </ul>
+            <ul data-role="listview"  data-inset="true">
+              <li><a id="apldLeaves" href="#">View Applied Leaves</a></li>
             </ul> 
+            <a href="#popupApplyError" id="applyError" data-rel="popup" data-position-to="" data-transition="pop"></a>
+            <div data-role="popup" id="popupApplyError" data-theme="a" class="ui-corner-all">
+                    <div style="padding:10px 20px;">
+                        <h3 id="leaveError">Not Valid</h3>
+                    </div>
+            </div>
         </div>
+    </div>
+    <!-- Applied Leaves Page -->
+     <div data-role="page" id="appliedLeaves" data-theme="a">
+        <div data-role="header" data-position="fixed">
+            <span><a href="#leavepage" style="background-color:#50a7e6;border:0;" class="ui-btn  ui-icon-carat-l ui-btn-icon-notext"></a>
+            <a style="color:#FFFAF0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Applied Leaves</a></span>
+        </div>
+        <div data-role="main" class="ui-content">
+            <div class="ui-grid-b" id="leaveTable">
+                  <div class="ui-block-a" style="border:1px  solid;"><span>From</span></div>
+                  <div class="ui-block-b" style="border:1px  solid;"><span>To</span></div>
+                  <div class="ui-block-c" style="border:1px  solid;"><span>Type</span></div>
+            </div>
+            <b id="noLeaves"> No Applied Leaves</b>
+        </div>
+       
     </div>
     <!-- UI Ends Here -->
     <!-- script -->
@@ -470,6 +495,9 @@
         var loggedInUser = "";
         var profileObj = {};
         var payObj = {};
+        var leaveObj = {};
+        var newLeaveObj = {};
+
         var db = window.openDatabase("TestDB", "1.0", "TestDB", 200000);
         $( document ).ready(function() {
             onLoad();
@@ -490,6 +518,7 @@
         $(document).on("pagecreate","#home",function(){   
            var timeString = date.toLocaleTimeString();
            payMethods.fetchDetails();
+           leaveMethods.fetchAvailableLeaves();
            $("#logTime1").html("Today logged in at "+timeString);
            $("#logTime2").html("");
            $("#schedule1").html("10.00 AM Dev Meeting");
@@ -594,6 +623,82 @@
         $(document).on("pagecreate","#leavepage",function(){
              $("#frmDate").datepicker();
              $("#toDate").datepicker();
+             $("#btnApplyLeave").on("click",function(e){
+                e.preventDefault();
+                var lfrmDate = $("#frmDate").val().trim(); 
+                var ltoDate =  $("#toDate").val().trim();
+                if(lfrmDate != null && lfrmDate !="" && ltoDate != null && ltoDate !=""){
+                    var tmpDate = new Date();
+                    var tmpDate2 = new Date();
+                    var tmpArr = lfrmDate.split("/");
+                    var tmpArr2 =  ltoDate.split("/");
+                    tmpDate.setDate(tmpArr[1]);
+                    tmpDate.setMonth(tmpArr[0]);
+                    tmpDate.setYear(tmpArr[2]);
+                    tmpDate2.setDate(tmpArr2[1]);
+                    tmpDate2.setMonth(tmpArr2[0]);
+                    tmpDate2.setYear(tmpArr2[2]);
+                    var count = diffbtwnDates(tmpDate, tmpDate2);
+                    console.log("count : "+count);
+                    count++;
+                    if(count > 0){
+                        var lType = $("#leaveType").val().trim();
+                        var isvalid = true;
+                        switch(lType){
+                            case "Privilege": if((leaveObj.privilege - count) < 0){
+                                                    isvalid = false;
+                                              }
+                                              break;
+
+                            case "Sick": if((leaveObj.sick) - count < 0){
+                                                    isvalid = false;
+                                              }
+                                              break;
+
+                            case "Casual": if((leaveObj.casual - count) < 0){
+                                                    isvalid = false;
+                                              }
+                                              break;
+                             default : break;
+                        }
+                        if(isvalid){
+                            newLeaveObj = {
+                                fromDate: lfrmDate,
+                                toDate: ltoDate,
+                                leaveType: lType
+                            };
+                            if(lType === "Privilege"){
+                                leaveObj.privilege = leaveObj.privilege-1;
+                            }else if(lType === "Sick"){
+                                leaveObj.sick = leaveObj.sick-1;
+                            }else{
+                                leaveObj.casual = leaveObj.casual-1;
+                            }
+                            leaveMethods.updateAvailableLeaves();
+                            leaveMethods.insertNewLeave();
+                        }else{
+                            $("#leaveError").html("Not in Available Limit");
+                            $( "#popupApplyError" ).popup( "open" );
+                        }
+                    
+                    }else{
+                        $("#leaveError").html("Dates not valid");
+                        $( "#popupApplyError" ).popup( "open" );
+                    }
+                    
+                }else{
+                    $("#leaveError").html("Dates not valid");
+                    $( "#popupApplyError" ).popup( "open" );
+                }
+           });
+           $("#apldLeaves").on("click",function(e){
+                e.preventDefault();
+                console.log("applied leaves");
+                 $.mobile.changePage("#appliedLeaves");
+           });
+        });
+        $(document).on("pagecreate","#appliedLeaves",function(){
+            leaveMethods.fetchAppliedLeaves();
         });
     </script>
 </body>

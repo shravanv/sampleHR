@@ -7,7 +7,8 @@ var ins_LOG = "INSERT INTO login_dtls VALUES (?,?)";
 var ins_PD = "INSERT INTO personal_dtls VALUES (?,?,?,?,?,?,?,?,?,?)";
 var ins_TC = "INSERT INTO timecard_dtls VALUES (?,?,?,?)";
 var ins_SCHED = "INSERT INTO schedule_dtls VALUES (?,?,?,?,?)";
-var ins_LEA = "INSERT INTO leave_dtls VALUES (?,?,?)";
+var ins_LEA = "INSERT INTO leave_dtls VALUES (?,?,?,?)";
+var ins_AVLEA = "INSERT INTO leave_avl VALUES (?,?,?,?)";
 var ins_FED = "INSERT INTO fed_tax_witholding VALUES (?,?,?,?)";
 var ins_ST = "INSERT INTO st_tax_witholding VALUES (?,?,?,?)";
 var ins_LOC = "INSERT INTO loc_tax_witholding VALUES (?,?,?)";
@@ -31,67 +32,7 @@ function onLoad() {
      onDeviceReady();
 }
 
-/*function onDeviceReady(){
-	msgString+=" onDevReady";
-	$("#logTime2").html(""+msgString);
-	db.transaction(initDB, error, success);
-	db.transaction(dummyData, error, success);
-}
-function initDB(tx){
-	msgString=+" in initDB";
-	$("#logTime2").html(""+msgString);
-	tx.executeSql("CREATE TABLE IF NOT EXISTS login_dtls (emp_id INTEGER, password TEXT)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS personal_dtls (emp_id INTEGER, name TEXT, city TEXT, contact INTEGER, designation TEXT, email TEXT, work_location TEXT, office_contact INTEGER, emer_name TEXT, emer_contact INTEGER)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS timecard_dtls (emp_id INTEGER, date TEXT, in_time INTEGER, out_time INTEGER)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS schedule_dtls (emp_id INTEGER , date TEXT , start_time INTEGER , end_time INTEGER , description TEXT)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS leave_dtls (emp_id INTEGER , date TEXT , leave_type INTEGER)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS fed_tax_witholding (emp_id INTEGER, marital_status TEXT, exemptions REAL, addln_witholdings REAL)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS st_tax_witholding (emp_id INTEGER, worked_state INTEGER, lived_state INTEGER, SUISDI INTEGER)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS loc_tax_witholding (emp_id INTEGER, worked_loc INTEGER, lived_loc INTEGER)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS pay_dtls (emp_id INTEGER, month_year TEXT, gross_pay REAL, regular REAL, tax REAL, other REAL, garnishment REAL, take_home REAL)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS states (state_id INTEGER, state TEXT)");
-}
 
-function dummyData(tx){
-	msgString +=" dumyData";
-	$("#logTime2").html(""+msgString);
-	tx.executeSql(ins_LOG,[301997,"pwd4app"],success,error);
-	tx.executeSql(ins_STATES,[1,"TEXAS"],success,error);
-	tx.executeSql(ins_STATES,[2,"CALIFORNIA"],success,error);
-	tx.executeSql(ins_STATES,[3,"ARIZONA"],success,error);
-	tx.executeSql(ins_PD,[301997,"Tom","New York",9988778866,"Sr.Exec.","tom@adpi.com","New York",9988778866,"Alex",9878768765],success,error);
-	tx.executeSql(ins_TC,[301997,"13012015",900,1800],success,error);
-	tx.executeSql(ins_SCHED,[301997,"13012015",1000,1100,"Meeting"],success,error);
-	tx.executeSql(ins_LEA,[301997,"14012015",2],success,error);
-	tx.executeSql(ins_FED,[301997,"Married",1480,9876],success,error);
-	tx.executeSql(ins_ST,[301997,1,2,1],success,error);
-	tx.executeSql(ins_LOC,[301997,1,2],success,error);
-	tx.executeSql(ins_PAY,[301997,"1214",5555,3333,2222,1111,667,4444],success,error);
-}
-
-function fetchLoginDetails(empId){
-	db.transaction(function(tx) {
-		tx.executeSql(sel_log,[empId], onQuerySuccess, error);
-	}, error, success);
-}
-function onQuerySuccess(tx, resultSet) {
-	var len = resultSet.rows.length;
-	$("#schedule1").html("pasword: "+resultSet.rows[0].password); 
-}
-
-function error(err){
-	
-	msgString +=" error";
-	$("#logTime2").html(""+msgString);
-
-	dbSuccess = err;
-}
-function success(){
-	
-	msgString +=" success";
-	$("#logTime2").html(""+msgString);
-	dbSuccess = "Success";
-}*/
 function onDeviceReady() {	
     db.transaction(populateDB, errorCB, successCB);
 }
@@ -102,6 +43,7 @@ function populateDB(tx) {
     tx.executeSql('DROP TABLE IF EXISTS timecard_dtls');
     tx.executeSql('DROP TABLE IF EXISTS schedule_dtls');
     tx.executeSql('DROP TABLE IF EXISTS leave_dtls');
+    tx.executeSql('DROP TABLE IF EXISTS leave_avl');
     tx.executeSql('DROP TABLE IF EXISTS fed_tax_witholding');
     tx.executeSql('DROP TABLE IF EXISTS st_tax_witholding');
     tx.executeSql('DROP TABLE IF EXISTS loc_tax_witholding');
@@ -113,7 +55,8 @@ function populateDB(tx) {
     tx.executeSql("CREATE TABLE IF NOT EXISTS personal_dtls (emp_id INTEGER, name TEXT, city TEXT, contact INTEGER, designation TEXT, email TEXT, work_location TEXT, office_contact INTEGER, emer_name TEXT, emer_contact INTEGER)");
 	tx.executeSql("CREATE TABLE IF NOT EXISTS timecard_dtls (emp_id INTEGER, date TEXT, in_time INTEGER, out_time INTEGER)");
 	tx.executeSql("CREATE TABLE IF NOT EXISTS schedule_dtls (emp_id INTEGER , date TEXT , start_time INTEGER , end_time INTEGER , description TEXT)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS leave_dtls (emp_id INTEGER , date TEXT , leave_type INTEGER)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS leave_dtls (emp_id INTEGER , fromdate TEXT , todate TEXT, leave_type TEXT)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS leave_avl (emp_id INTEGER , privilege INTEGER , sick INTEGER, casual INTEGER)");
 	tx.executeSql("CREATE TABLE IF NOT EXISTS fed_tax_witholding (emp_id INTEGER, marital_status TEXT, exemptions REAL, addln_witholdings REAL)");
 	tx.executeSql("CREATE TABLE IF NOT EXISTS st_tax_witholding (emp_id INTEGER, worked_state INTEGER, lived_state INTEGER, SUISDI INTEGER)");
 	tx.executeSql("CREATE TABLE IF NOT EXISTS loc_tax_witholding (emp_id INTEGER, worked_loc INTEGER, lived_loc INTEGER)");
@@ -125,7 +68,8 @@ function populateDB(tx) {
 	tx.executeSql(ins_PD,[301997,"Shravan Varala","New York",9988778866,"Member Technical","shravan@adpi.com","New York",9988778866,"Narender",9878768765],successCB,errorInsert);
 	tx.executeSql(ins_TC,[301997,"13012015",900,1800],successCB,errorInsert);
 	tx.executeSql(ins_SCHED,[301997,"13012015",1000,1100,"Meeting"],successCB,errorInsert);
-	tx.executeSql(ins_LEA,[301997,"14012015",2],successCB,errorInsert);
+	tx.executeSql(ins_LEA,[301997,"01/29/2014","01/29/2014","Privilege"],successCB,errorInsert);
+	tx.executeSql(ins_AVLEA,[301997, 8, 6, 4],successCB,errorInsert);
 	tx.executeSql(ins_FED,[301997,"Married",1480,9876],successCB,errorInsert);
 	tx.executeSql(ins_ST,[301997,1,2,1],successCB,errorInsert);
 	tx.executeSql(ins_LOC,[301997,1,2],successCB,errorInsert);
