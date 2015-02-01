@@ -64,22 +64,22 @@
         <div data-role="panel" id="myPanel" data-display="overlay" data-position="right"> 
             <ul data-role="listview" data-theme="a" data-divider-theme="a" style="margin-top:-16px;" class="nav-search">
                 <li data-filtertext="wai-aria voiceover accessibility screen reader">
-                    <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-user" href="#profile">Profile</a>
+                    <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-user" id="menuProfile" href="#profile">Profile</a>
                 </li>
                 <li data-filtertext="accordions collapsible set collapsible-set collapsed">
-                    <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-moneyicon" href="#paypage">Pay</a>
+                    <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-moneyicon" id="menuPay" href="#paypage">Pay</a>
                 </li>
                 <li data-filtertext="wai-aria voiceover accessibility screen reader">
-                    <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-clock" href="#timecard">Time Card</a>
+                    <a class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-clock" id="menuTimecard" href="#timecard">Time Card</a>
                 </li>
-                <li data-filtertext="wai-aria voiceover accessibility screen reader">
+                <!-- <li data-filtertext="wai-aria voiceover accessibility screen reader">
                     <a class="ui-btn  ui-corner-all ui-shadow ui-icon-calendar ui-btn-icon-left"href="#calendar">Calendar</a>
+                </li> -->
+                <li data-filtertext="wai-aria voiceover accessibility screen reader">
+                    <a class="ui-btn  ui-corner-all ui-shadow ui-icon-calendar ui-btn-icon-left" id="menuLeaves" href="#leavepage">Leaves</a>
                 </li>
                 <li data-filtertext="wai-aria voiceover accessibility screen reader">
-                    <a class="ui-btn  ui-corner-all ui-shadow ui-icon-calendar ui-btn-icon-left"href="#leavepage">Leaves</a>
-                </li>
-                <li data-filtertext="wai-aria voiceover accessibility screen reader">
-                    <a class="ui-btn  ui-corner-all ui-shadow ui-icon-lock ui-btn-icon-left"href="#login">Logout</a>
+                    <a class="ui-btn  ui-corner-all ui-shadow ui-icon-lock ui-btn-icon-left" id="menuLogout" href="#login">Logout</a>
                 </li>
              </ul>               
         </div>
@@ -87,7 +87,7 @@
         <div data-role="header" data-position="fixed">
             <span>
                 <a href="#" style="background-color:#50a7e6;border:0;" class="ui-btn  ui-corner-all ui-shadow ui-icon-home ui-btn-icon-notext"></a>
-                <a href="#" style="background-color:#50a7e6;border:0;" class="ui-btn  ui-corner-all ui-shadow ui-icon-clock ui-btn-icon-notext"></a>
+                <a href="#" style="background-color:#50a7e6;border:0;" id="logClockIcon" class="ui-btn  ui-corner-all ui-shadow ui-icon-clock ui-btn-icon-notext"></a>
                 <a  href="#myPanel" style="background-color:#50a7e6;border:0;" class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-notext"></a>
             </span>
         </div>
@@ -124,9 +124,9 @@
           <li data-icon="false">
             <a href="#"><img src="css/themes/images/moneyIcon.png">
                 <h2 class="">Your Pay</h2>
-                <p class=""><strong id="logTime1">Total Pay : $2255.00</strong></p>
-                <p class=""><strong id="logTime2">Deductions: $150.00</strong></p>
-                <p class=""><strong id="logTime2">Net Pay: $2105.00</strong></p>
+                <p class=""><strong id="hmgrPay">Gross Pay : $2255.00</strong></p>
+                <p class=""><strong id="hmTax">Tax&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $150.00</strong></p>
+                <p class=""><strong id="hmtkHome">Take Home&nbsp;&nbsp; : $2105.00</strong></p>
             </a>
            </li>
         </ul>
@@ -380,14 +380,13 @@
             <a style="color:#FFFAF0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Timecard</a></span>
         </div>
         <!-- <input type="date" name="date" id="date" value="" > -->
-        <h3 id="curWeek"> </h3>
+        <!-- <h3 id="curWeek"> </h3> -->
         <table data-role="table" data-mode="" class="ui-responsive ui-shadow" id="tblTimeCard">
           <thead>
             <tr>
               <th data-priority="1">Day</th>
               <th data-priority="2">Loged In</th>
               <th data-priority="3">Loged Out</th>
-              <th data-priority="4">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -395,31 +394,6 @@
               <td>11/01</td>
               <td>9.00 AM</td>
               <td>6.00 PM</td>
-              <td>9.00</td>
-            </tr>
-            <tr>
-              <td>12/01</td>
-              <td>9.30 AM</td>
-              <td>7.00 PM</td>
-              <td>9.30</td>
-            </tr>
-            <tr>
-              <td>13/01</td>
-              <td>9.00 AM</td>
-              <td>6.15 PM</td>
-              <td>9.15</td>
-            </tr>
-            <tr>
-              <td>14/01</td>
-              <td>9.00 AM</td>
-              <td>6.00 PM</td>
-              <td>8.00</td>
-            </tr>
-            <tr>
-              <td>15/01</td>
-              <td>9.00 AM</td>
-              <td>5.00 PM</td>
-              <td>8.00</td>
             </tr>
           </tbody>
         </table>
@@ -515,18 +489,38 @@
             });
         });
         
-        $(document).on("pagecreate","#home",function(){   
-           var timeString = date.toLocaleTimeString();
-           payMethods.fetchDetails();
+        $(document).on("pagecreate","#home",function(){
            leaveMethods.fetchAvailableLeaves();
-           $("#logTime1").html("Today logged in at "+timeString);
-           $("#logTime2").html("");
+           payMethods.fetchDetails();
            $("#schedule1").html("10.00 AM Dev Meeting");
            $("#schedule2").html("11.00 AM Release Planning");
+
+           $("#logClockIcon").on("click",function(){
+                logTimeMethods.updateTodayLogoutTime();
+           });
+
+           $("#menuLogout").on("click",function(){
+           });
+
+           $("#menuProfile").on("click",function(){
+                profile.fetchDetails();
+           });
+           
+           $("#menuPay").on("click",function(){
+                payMethods.populateData();
+           });
+
+           $("#menuLeaves").on("click",function(){
+                $("#frmDate").val("");
+                $("#toDate").val("");
+            });
+           $("#menuTimecard").on("click",function(){
+                logTimeMethods.fetchTotalLogTimes();
+            });
+           
         });
 
         $(document).on("pagecreate","#profile",function(){
-            profile.fetchDetails();
             
            $("#editPersnInfo").on("click",function(){
                 var fName   =$("#prName").html().trim();
@@ -537,6 +531,7 @@
                 $("#pecontact").val(contact);
                 $.mobile.changePage("#editPersonalInfo");
             });
+
            $("#editEmContact").on("click",function(){
                 var name   =$("#prEmName").html().trim();
                 var contact =$("#prEmContact").html().trim();
@@ -579,7 +574,6 @@
 
         $(document).on("pagecreate","#paypage",function(){
             payMethods.populateData();
-            
             $("#btnSaveTaxWh").on("click",function(e){
                 e.preventDefault();
                 payObj.marital_status = $("#marStatus").val().trim();
@@ -596,7 +590,7 @@
         });
 
         $(document).on("pagecreate","#calendar",function(){
-           console.log("Calendar page");
+          
            $("#datepicker").datepicker();
            
            $(".addMeeting").on("click",function(e){
@@ -614,10 +608,10 @@
         });
         
         $(document).on("pagecreate","#timecard",function(){
-            var week = startAndEndOfWeek(date);
+            /*var week = startAndEndOfWeek(date);
             var startDate = (week[0].getMonth()+1).toString()+"/"+week[0].getDate()+"/"+week[0].getFullYear();
             var endDate = (week[1].getMonth()+1).toString()+"/"+week[1].getDate()+"/"+week[1].getFullYear();
-            $("#curWeek").html("Week : "+startDate+" - "+endDate);
+            $("#curWeek").html("Week : "+startDate+" - "+endDate);*/
         });
 
         $(document).on("pagecreate","#leavepage",function(){
@@ -639,7 +633,6 @@
                     tmpDate2.setMonth(tmpArr2[0]);
                     tmpDate2.setYear(tmpArr2[2]);
                     var count = diffbtwnDates(tmpDate, tmpDate2);
-                    console.log("count : "+count);
                     count++;
                     if(count > 0){
                         var lType = $("#leaveType").val().trim();
@@ -693,12 +686,13 @@
            });
            $("#apldLeaves").on("click",function(e){
                 e.preventDefault();
-                console.log("applied leaves");
-                 $.mobile.changePage("#appliedLeaves");
+                leaveMethods.fetchAppliedLeaves();
+                $.mobile.changePage("#appliedLeaves");
            });
         });
         $(document).on("pagecreate","#appliedLeaves",function(){
-            leaveMethods.fetchAppliedLeaves();
+            
+            //leaveMethods.fetchAppliedLeaves();
         });
     </script>
 </body>

@@ -7,11 +7,8 @@ function diffbtwnDates( date1, date2 ) {
 }
 
 function payQuerySuccess(tx, resultSet) {
-	console.log("in payQuerySuccess");
-	console.dir(resultSet.rows.item(0));
 	if(resultSet.rows.length > 0){
 		var resObj = resultSet.rows.item(0);
-		console.log("before");
 		payObj = {
             month: resObj.month,
             gross_pay: resObj.gross_pay,
@@ -29,18 +26,20 @@ function payQuerySuccess(tx, resultSet) {
             worked_loc : resObj.worked_loc,
             lived_loc : resObj.lived_loc
         };
-        
+        $("#hmgrPay").html("Gross Pay : $ "+payObj.gross_pay);
+        $("#hmTax").html("Tax&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: $ "+payObj.tax);
+        $("#hmtkHome").html("Take Home : $"+payObj.take_home);
 	}else{
-		console.log("no results ") 
+		
 	}	
 }
 
 function payUpdateQuerySuccess(tx, resultSet) {
-	console.log("in payUpdateQuerySuccess");
+	//console.log("in payUpdateQuerySuccess");
 }
 
 function payQueryFail(tx, err) {
-	console.log("Pay query Fail");
+	
 }
 
 
@@ -52,7 +51,6 @@ var payMethods = {
 					db.transaction(this.queryDB, this.errorCB);
 				 },
 	populateData: function(){
-					console.log("in populate");
 					$("#pygross").html("$ "+payObj.gross_pay);
 	                $("#pyregular").html("$ "+payObj.regular);
 	                $("#pytax").html("$ "+payObj.tax);
@@ -69,13 +67,11 @@ var payMethods = {
 	                $("#wrkLocal").val(payObj.worked_loc).selectmenu('refresh');
 				},
 	queryDB: function(tx) {
-				console.log("in pay queryDB");
 			    tx.executeSql('SELECT * FROM pay_dtls WHERE emp_id='+loggedInUser, [], payQuerySuccess, payQueryFail);
 	},
 	updateQueryDB: function(tx) {
-				console.log("in pay updatequeryDB");
 				var tmpSqlStmt = 'UPDATE pay_dtls SET marital_status ="'+payObj.marital_status+'",exemptions='+payObj.exemptions+',addnl_witholdings='+payObj.addnl_witholdings+', worked_state="'+payObj.worked_state+'", lived_state="'+payObj.lived_state+'", suisdi="'+payObj.suisdi+'", worked_loc="'+payObj.worked_loc+'", lived_loc="'+payObj.worked_loc+'" WHERE emp_id='+loggedInUser;
-			    console.log("update query: "+tmpSqlStmt);
+			    
 			    tx.executeSql(tmpSqlStmt, [], payUpdateQuerySuccess, payQueryFail);
 	},
 	updateDetails: function(){
@@ -85,11 +81,8 @@ var payMethods = {
 };
 
 function avlLaveQuerySuccess(tx, resultSet) {
-	console.log("in avlLaveQuerySuccess");
-	console.dir(resultSet.rows.item(0));
 	if(resultSet.rows.length > 0){
 		var resObj = resultSet.rows.item(0);
-		console.log("before");
 		leaveObj={
             privilege:resObj.privilege,
             sick: resObj.sick,
@@ -97,12 +90,12 @@ function avlLaveQuerySuccess(tx, resultSet) {
         };
         leaveMethods.populateAvailableLeaveData();
 	}else{
-		console.log("no results ") 
+		//console.log("no results ") 
 	}	
 }
 function apldLaveQuerySuccess(tx, resultSet) {
-	console.log("in apldLaveQuerySuccess");
 	var resLength = resultSet.rows.length; 
+	$("#leaveTable").children(".leaveRow").remove();
 	if(resLength> 0){
 		$("#noLeaves").hide();
 		for(var i=0;i<resLength;i++){
@@ -112,9 +105,9 @@ function apldLaveQuerySuccess(tx, resultSet) {
 			 var aSpan = document.createElement("span");
 			 var bSpan = document.createElement("span");
 			 var cSpan = document.createElement("span");
-			 $(aDiv).addClass("ui-block-a");
-			 $(bDiv).addClass("ui-block-b");
-			 $(cDiv).addClass("ui-block-c");
+			 $(aDiv).addClass("ui-block-a leaveRow");
+			 $(bDiv).addClass("ui-block-b leaveRow");
+			 $(cDiv).addClass("ui-block-c leaveRow");
 			 $(aSpan).html(resultSet.rows.item(i).fromdate);
 			 $(bSpan).html(resultSet.rows.item(i).todate);
 			 $(cSpan).html(resultSet.rows.item(i).leave_type);
@@ -140,7 +133,7 @@ function leaveInsertQuerySuccess(tx, resultSet) {
 }
 
 function leaveQueryFail(tx, err) {
-	console.log("Pay query Fail");
+	//console.log("Pay query Fail");
 }
 function avlLeaveUpdateQuerySuccess(tx, resultSet){
 	leaveMethods.populateAvailableLeaveData();
@@ -155,7 +148,6 @@ var leaveMethods = {
 					db.transaction(this.queryDB, this.errorCB);
 				 },
 	populateAvailableLeaveData:function(){
-					console.log("in populate");
 					$("#hmPLeaves").html(leaveObj.privilege+" Privilege Leaves");
 	                $("#hmCLeaves").html(leaveObj.casual+" Casual Leaves");
 	                $("#hmSLeaves").html(leaveObj.sick+" Sick Leaves");
@@ -164,7 +156,6 @@ var leaveMethods = {
 	                $("#siLeaves").html(leaveObj.sick);
 				},
 	populateLeaveData: function(){
-					console.log("in populate populateLeaveData");
 					$("#pygross").html("$ "+payObj.gross_pay);
 	                $("#pyregular").html("$ "+payObj.regular);
 	                $("#pytax").html("$ "+payObj.tax);
@@ -181,21 +172,17 @@ var leaveMethods = {
 	                $("#wrkLocal").val(payObj.worked_loc).selectmenu('refresh');
 				},
 	queryDB: function(tx) {
-				console.log("in leave queryDB");
 			    tx.executeSql('SELECT * FROM leave_avl WHERE emp_id='+loggedInUser, [], avlLaveQuerySuccess, leaveQueryFail);
 	},
 	apldQueryDB: function(tx) {
-				console.log("in leave queryDB");
 			    tx.executeSql('SELECT * FROM leave_dtls WHERE emp_id='+loggedInUser, [], apldLaveQuerySuccess, leaveQueryFail);
 	},
 	updateQueryDB: function(tx) {
-				console.log("in leave updatequeryDB");
 				var tmpSqlStmt = 'UPDATE leave_avl SET privilege ='+leaveObj.privilege+',sick='+leaveObj.sick+',casual='+leaveObj.casual+' WHERE emp_id='+loggedInUser;
-			    console.log("update query: "+tmpSqlStmt);
+			    
 			    tx.executeSql(tmpSqlStmt, [], avlLeaveUpdateQuerySuccess, leaveQueryFail);
 	},
 	insertQueryDB: function(tx) {
-				console.log("in leave insertQueryDB");
 			    tx.executeSql(ins_LEA,[loggedInUser,newLeaveObj.fromDate,newLeaveObj.toDate,newLeaveObj.leaveType],leaveInsertQuerySuccess,leaveQueryFail);
 	},
 	updateAvailableLeaves: function(){
@@ -207,5 +194,103 @@ var leaveMethods = {
 	fetchAppliedLeaves: function(){
 					db.transaction(this.apldQueryDB, this.errorCB);
 	}
+
+}
+
+function populateLogTime(){
+	logTimeMethods.fetchTodayLoginTime();
+	logTimeMethods.fetchPrevDayLoginTime();	
+}
+
+function fetchTodayQuerySuccess(tx, resultSet){
+	if(resultSet.rows.length > 0){
+		$("#logTime1").html("Today logged in at "+resultSet.rows.item(0).in_time);
+	}else{
+		var tmpDate2 = new Date();
+		var timenw = tmpDate2.toLocaleTimeString();
+		$("#logTime1").html("Today logged in at "+timenw);
+		logTimeMethods.insertTodayLoginTime();
+	}
+
+}
+function fetchPredayQuerySuccess(tx, resultSet){
+	if(resultSet.rows.length > 0){
+        $("#logTime2").html("Yesterday logged out at: "+resultSet.rows.item(0).out_time);
+	}else{
+		$("#logTime2").html("Yesterday logged out at: --");
+	}
+}
+function fetchLogTimesQuerySuccess(tx, resultSet){
+	var resLen = resultSet.rows.length;
+	$("#tblTimeCard").children("tbody").children("tr").remove();
+	for(var j=0; j< resLen; j++){
+		var timeRow = document.createElement("tr");
+		var dateTD = document.createElement("td");		
+		var inTime = document.createElement("td");		
+		var outTime = document.createElement("td");
+		$(dateTD).html(resultSet.rows.item(j).date).appendTo(timeRow);
+		$(inTime).html(resultSet.rows.item(j).in_time).appendTo(timeRow);
+		$(outTime).html(resultSet.rows.item(j).out_time).appendTo(timeRow);
+		$("#tblTimeCard").append(timeRow);
+	} 
+}
+function logTimeInsertQuerySuccess(tx, resultSet){
+	//console.log("in logTimeInsertQuerySuccess");
+}
+
+function logTimeQueryFail(){
+	//console.log("logTimeQueryFail");
+}
+function logTimeQueryFail2(){
+}
+
+var logTimeMethods = {
+	errorCB : function (tx, err) {
+				    //console.info("Error processing SQL: "+err);
+			   },
+	fetchTodayLoginQry: function(tx) {
+				var todaydate = new Date();
+        		var todaydateString = (todaydate.getMonth()+1).toString()+"/"+todaydate.getDate()+"/"+todaydate.getFullYear();
+				var selectQuery1 = 'SELECT * FROM timecard_dtls WHERE emp_id='+loggedInUser+' and date="'+todaydateString+'"';
+			    tx.executeSql(selectQuery1, [], fetchTodayQuerySuccess, logTimeQueryFail);
+	},
+	fetchPrevdayLoginQry: function(tx) {
+				var todaydate2 = new Date();
+				todaydate2.setDate(todaydate2.getDate() - 1);
+        		var predaydateString = (todaydate2.getMonth()+1).toString()+"/"+todaydate2.getDate()+"/"+todaydate2.getFullYear();
+				var selectQuery2 = 'SELECT * FROM timecard_dtls WHERE emp_id='+loggedInUser+' and date="'+predaydateString+'"';
+				tx.executeSql(selectQuery2, [], fetchPredayQuerySuccess, logTimeQueryFail2);
+	},
+	fetchLogTimesQry:function(tx) {
+			    tx.executeSql('SELECT * FROM timecard_dtls WHERE emp_id='+loggedInUser, [], fetchLogTimesQuerySuccess, logTimeQueryFail);
+	},
+	updateQueryDB: function(tx) {
+				var tmpDate = new Date();
+				var timeNow = tmpDate.toLocaleTimeString();
+				var todayString = (tmpDate.getMonth()+1).toString()+"/"+tmpDate.getDate()+"/"+tmpDate.getFullYear();
+				var tmpSqlStmt = 'UPDATE timecard_dtls SET out_time ="'+timeNow+'" WHERE emp_id='+loggedInUser+' and date="'+todayString+'"';
+			    tx.executeSql(tmpSqlStmt, [], logTimeInsertQuerySuccess, logTimeQueryFail);
+	},
+	insertQueryDB: function(tx) {
+				var tmpDate1 = new Date();
+				var timeNow1 = tmpDate1.toLocaleTimeString();
+				var todayString1 = (tmpDate1.getMonth()+1).toString()+"/"+tmpDate1.getDate()+"/"+tmpDate1.getFullYear();
+			    tx.executeSql(ins_TC,[loggedInUser,todayString1,timeNow1,""],logTimeInsertQuerySuccess,logTimeQueryFail);
+	},
+	updateTodayLogoutTime: function(){
+					db.transaction(this.updateQueryDB, this.errorCB);
+	},
+	insertTodayLoginTime: function(){
+					db.transaction(this.insertQueryDB, this.errorCB);
+	},
+	fetchTodayLoginTime: function(){
+					db.transaction(this.fetchTodayLoginQry, this.errorCB);
+	},
+	fetchPrevDayLoginTime: function(){
+					db.transaction(this.fetchPrevdayLoginQry, this.errorCB);
+	},
+	fetchTotalLogTimes: function(){
+					db.transaction(this.fetchLogTimesQry, this.errorCB);
+	},
 
 }
