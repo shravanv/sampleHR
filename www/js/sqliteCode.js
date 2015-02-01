@@ -29,21 +29,26 @@ function onLoad() {
 	//msgString+=" onLoad";
 	//$("#logTime2").html(""+msgString);
      //document.addEventListener("deviceready", onDeviceReady, false);
-     //onDeviceReady();
-     checkIfDBExist();
+     onDeviceReady();
+     //checkIfDBExist();
 }
 
-function checkIfDBExist(){
-	db.transaction(checkForTble, errorDBExist, successDBExist);
+function checkIfDataExist(){
+	db.transaction(checkForTable, errorDBExist, successDBExist);
 }
 
 
-function checkForTble(tx){
+function checkForTable(tx){
 	console.log("in checkForTble");
-	tx.executeSql('SELECT * FROM LOGIN', successCheckTable, errorCheckTable);
+	tx.executeSql('SELECT * FROM LOGIN',[], successCheckTable, errorCheckTable);
 }
 function successCheckTable(tx, resultSet) {
-	console.log("in successCheckTable");
+	if(resultSet.rows.length > 0){
+		console.log("rows exist");
+	}else{
+		console.log(" no rows");
+		insertDataInTables();
+	}
 }
 function errorCheckTable(tx, err) {
 	console.log("in errorCheckTable: "+err);	
@@ -51,7 +56,7 @@ function errorCheckTable(tx, err) {
 
 function errorDBExist(){
 	console.log("in errorDBExist");
-	onDeviceReady();
+	//onDeviceReady();
 }
 
 function successDBExist(){
@@ -63,32 +68,14 @@ function onDeviceReady() {
     db.transaction(populateDB, errorCB, successCB);
 }
 
-function populateDB(tx) {
-	console.log("in populateDB")
-    tx.executeSql('DROP TABLE IF EXISTS LOGIN');
-    tx.executeSql('DROP TABLE IF EXISTS personal_dtls');
-    tx.executeSql('DROP TABLE IF EXISTS timecard_dtls');
-    tx.executeSql('DROP TABLE IF EXISTS schedule_dtls');
-    tx.executeSql('DROP TABLE IF EXISTS leave_dtls');
-    tx.executeSql('DROP TABLE IF EXISTS leave_avl');
-    tx.executeSql('DROP TABLE IF EXISTS fed_tax_witholding');
-    tx.executeSql('DROP TABLE IF EXISTS st_tax_witholding');
-    tx.executeSql('DROP TABLE IF EXISTS loc_tax_witholding');
-    tx.executeSql('DROP TABLE IF EXISTS pay_dtls');
-    tx.executeSql('DROP TABLE IF EXISTS states');
-    tx.executeSql('CREATE TABLE IF NOT EXISTS LOGIN (emp_id unique, password)');
-    tx.executeSql('INSERT INTO LOGIN (emp_id, password) VALUES (301997, "adphyd")');
+function insertDataInTables() {	
+	console.log("in onDeviceReady");
+    db.transaction(populateDataInTables, errorCB, successCB);
+}
+
+function populateDataInTables(tx){
+	tx.executeSql('INSERT INTO LOGIN (emp_id, password) VALUES (301997, "adphyd")');
     tx.executeSql('INSERT INTO LOGIN (emp_id, password) VALUES (301998, "adpind")');
-    tx.executeSql("CREATE TABLE IF NOT EXISTS personal_dtls (emp_id INTEGER, name TEXT, city TEXT, contact INTEGER, designation TEXT, email TEXT, work_location TEXT, office_contact INTEGER, emer_name TEXT, emer_contact INTEGER)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS timecard_dtls (emp_id INTEGER, date TEXT, in_time INTEGER, out_time INTEGER)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS schedule_dtls (emp_id INTEGER , date TEXT , start_time INTEGER , end_time INTEGER , description TEXT)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS leave_dtls (emp_id INTEGER , fromdate TEXT , todate TEXT, leave_type TEXT)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS leave_avl (emp_id INTEGER , privilege INTEGER , sick INTEGER, casual INTEGER)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS fed_tax_witholding (emp_id INTEGER, marital_status TEXT, exemptions REAL, addln_witholdings REAL)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS st_tax_witholding (emp_id INTEGER, worked_state INTEGER, lived_state INTEGER, SUISDI INTEGER)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS loc_tax_witholding (emp_id INTEGER, worked_loc INTEGER, lived_loc INTEGER)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS pay_dtls (emp_id INTEGER, month_year TEXT, gross_pay REAL, regular REAL, tax REAL, other REAL, garnishment REAL, take_home REAL, marital_status TEXT, exemptions REAL, addnl_witholdings REAL, worked_state TEXT, lived_state TEXT, suisdi TEXT, worked_loc TEXT, lived_loc TEXT)");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS states (state_id INTEGER, state TEXT)");
 	tx.executeSql(ins_STATES,[1,"TEXAS"],successCB,errorInsert);
 	tx.executeSql(ins_STATES,[2,"CALIFORNIA"],successCB,errorInsert);
 	tx.executeSql(ins_STATES,[3,"ARIZONA"],successCB,errorInsert);
@@ -101,6 +88,47 @@ function populateDB(tx) {
 	tx.executeSql(ins_ST,[301997,1,2,1],successCB,errorInsert);
 	tx.executeSql(ins_LOC,[301997,1,2],successCB,errorInsert);
 	tx.executeSql(ins_PAY,[301997,"1214",5555,3333,2222,1111,667,4444,"Married",100,200,"Arizona","New York","New York","109F-Kansas City MO","2075-Vigo County IN"],successCB,errorInsert);
+}
+
+function populateDB(tx) {
+	console.log("in populateDB")
+    /*tx.executeSql('DROP TABLE IF EXISTS LOGIN');
+    tx.executeSql('DROP TABLE IF EXISTS personal_dtls');
+    tx.executeSql('DROP TABLE IF EXISTS timecard_dtls');
+    tx.executeSql('DROP TABLE IF EXISTS schedule_dtls');
+    tx.executeSql('DROP TABLE IF EXISTS leave_dtls');
+    tx.executeSql('DROP TABLE IF EXISTS leave_avl');
+    tx.executeSql('DROP TABLE IF EXISTS fed_tax_witholding');
+    tx.executeSql('DROP TABLE IF EXISTS st_tax_witholding');
+    tx.executeSql('DROP TABLE IF EXISTS loc_tax_witholding');
+    tx.executeSql('DROP TABLE IF EXISTS pay_dtls');
+    tx.executeSql('DROP TABLE IF EXISTS states');*/
+    tx.executeSql('CREATE TABLE IF NOT EXISTS LOGIN (emp_id unique, password)');
+    tx.executeSql("CREATE TABLE IF NOT EXISTS personal_dtls (emp_id INTEGER, name TEXT, city TEXT, contact INTEGER, designation TEXT, email TEXT, work_location TEXT, office_contact INTEGER, emer_name TEXT, emer_contact INTEGER)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS timecard_dtls (emp_id INTEGER, date TEXT, in_time INTEGER, out_time INTEGER)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS schedule_dtls (emp_id INTEGER , date TEXT , start_time INTEGER , end_time INTEGER , description TEXT)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS leave_dtls (emp_id INTEGER , fromdate TEXT , todate TEXT, leave_type TEXT)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS leave_avl (emp_id INTEGER , privilege INTEGER , sick INTEGER, casual INTEGER)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS fed_tax_witholding (emp_id INTEGER, marital_status TEXT, exemptions REAL, addln_witholdings REAL)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS st_tax_witholding (emp_id INTEGER, worked_state INTEGER, lived_state INTEGER, SUISDI INTEGER)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS loc_tax_witholding (emp_id INTEGER, worked_loc INTEGER, lived_loc INTEGER)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS pay_dtls (emp_id INTEGER, month_year TEXT, gross_pay REAL, regular REAL, tax REAL, other REAL, garnishment REAL, take_home REAL, marital_status TEXT, exemptions REAL, addnl_witholdings REAL, worked_state TEXT, lived_state TEXT, suisdi TEXT, worked_loc TEXT, lived_loc TEXT)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS states (state_id INTEGER, state TEXT)");
+    /*tx.executeSql('INSERT INTO LOGIN (emp_id, password) VALUES (301997, "adphyd")');
+    tx.executeSql('INSERT INTO LOGIN (emp_id, password) VALUES (301998, "adpind")');
+	tx.executeSql(ins_STATES,[1,"TEXAS"],successCB,errorInsert);
+	tx.executeSql(ins_STATES,[2,"CALIFORNIA"],successCB,errorInsert);
+	tx.executeSql(ins_STATES,[3,"ARIZONA"],successCB,errorInsert);
+	tx.executeSql(ins_PD,[301997,"Shravan Varala","New York",9988778866,"Member Technical","shravan@adpi.com","New York",9988778866,"Narender",9878768765],successCB,errorInsert);
+	tx.executeSql(ins_TC,[301997,"13012015",900,1800],successCB,errorInsert);
+	tx.executeSql(ins_SCHED,[301997,"13012015",1000,1100,"Meeting"],successCB,errorInsert);
+	tx.executeSql(ins_LEA,[301997,"01/29/2014","01/29/2014","Privilege"],successCB,errorInsert);
+	tx.executeSql(ins_AVLEA,[301997, 8, 6, 4],successCB,errorInsert);
+	tx.executeSql(ins_FED,[301997,"Married",1480,9876],successCB,errorInsert);
+	tx.executeSql(ins_ST,[301997,1,2,1],successCB,errorInsert);
+	tx.executeSql(ins_LOC,[301997,1,2],successCB,errorInsert);
+	tx.executeSql(ins_PAY,[301997,"1214",5555,3333,2222,1111,667,4444,"Married",100,200,"Arizona","New York","New York","109F-Kansas City MO","2075-Vigo County IN"],successCB,errorInsert);*/
+   	checkIfDataExist();
    }
 
 // Transaction error callback
