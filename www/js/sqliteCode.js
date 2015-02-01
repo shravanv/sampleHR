@@ -29,15 +29,42 @@ function onLoad() {
 	//msgString+=" onLoad";
 	//$("#logTime2").html(""+msgString);
      //document.addEventListener("deviceready", onDeviceReady, false);
-     onDeviceReady();
+     //onDeviceReady();
+     checkIfDBExist();
+}
+
+function checkIfDBExist(){
+	db.transaction(checkForTble, errorDBExist, successDBExist);
 }
 
 
+function checkForTble(tx){
+	console.log("in checkForTble");
+	tx.executeSql('SELECT * FROM LOGIN', successCheckTable, errorCheckTable);
+}
+function successCheckTable(tx, resultSet) {
+	console.log("in successCheckTable");
+}
+function errorCheckTable(tx, err) {
+	console.log("in errorCheckTable: "+err);	
+}
+
+function errorDBExist(){
+	console.log("in errorDBExist");
+	onDeviceReady();
+}
+
+function successDBExist(){
+	console.log("in successDBExist");
+} 
+
 function onDeviceReady() {	
+	console.log("in onDeviceReady");
     db.transaction(populateDB, errorCB, successCB);
 }
 
 function populateDB(tx) {
+	console.log("in populateDB")
     tx.executeSql('DROP TABLE IF EXISTS LOGIN');
     tx.executeSql('DROP TABLE IF EXISTS personal_dtls');
     tx.executeSql('DROP TABLE IF EXISTS timecard_dtls');
@@ -74,8 +101,7 @@ function populateDB(tx) {
 	tx.executeSql(ins_ST,[301997,1,2,1],successCB,errorInsert);
 	tx.executeSql(ins_LOC,[301997,1,2],successCB,errorInsert);
 	tx.executeSql(ins_PAY,[301997,"1214",5555,3333,2222,1111,667,4444,"Married",100,200,"Arizona","New York","New York","109F-Kansas City MO","2075-Vigo County IN"],successCB,errorInsert);
-    console.log("in populateDB");
-}
+   }
 
 // Transaction error callback
 function errorCB(tx, err) {
@@ -206,20 +232,17 @@ var profile = {
 	                $("#prCity").html(""+profileObj.city);
 	                $("#prContact").html(""+profileObj.contact);
 	                $("#prDesg").html(""+profileObj.designation);
-	                $("#prEmail").html(profileObj.email);
-	                $("#prWrkLcn").html(profileObj.work_location);
-	                $("#prOffcCntct").html(profileObj.office_contact);
-	                $("#prEmName").html(profileObj.emer_name);
-	                $("#prOffcCntct").html(profileObj.emer_contact);
+	                $("#prEmail").html(""+profileObj.email);
+	                $("#prWrkLcn").html(""+profileObj.work_location);
+	                $("#prOffcCntct").html(""+profileObj.office_contact);
+	                $("#prEmName").html(""+profileObj.emer_name);
+	                $("#prEmContact").html(""+profileObj.emer_contact);
 				},
 	queryDB: function(tx) {
-				console.log("in profile queryDB");
 			    tx.executeSql('SELECT * FROM personal_dtls WHERE emp_id='+loggedInUser, [], profileQuerySuccess, prUpdateQueryfail);
 	},
 	updateQueryDB: function(tx) {
-				console.log("in profile updatequeryDB");
 				var tmpSqlStmt = 'UPDATE personal_dtls SET name ="'+profileObj.name+'",city="'+profileObj.city+'",contact='+profileObj.contact+', emer_name="'+profileObj.emer_name+'", emer_contact='+profileObj.emer_contact+' WHERE emp_id='+loggedInUser;
-			    console.log("update query: "+tmpSqlStmt);
 			    tx.executeSql(tmpSqlStmt, [], prUpdateQuerySuccess, prUpdateQueryfail);
 	},
 	updateDetails: function(){
