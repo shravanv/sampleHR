@@ -35,11 +35,12 @@ function payQuerySuccess(tx, resultSet) {
 }
 
 function payUpdateQuerySuccess(tx, resultSet) {
-	//console.log("in payUpdateQuerySuccess");
+	console.log("in payUpdateQuerySuccess");
+	$( "#popupPaySave" ).popup( "open" );
 }
 
 function payQueryFail(tx, err) {
-	
+	console.log("in payQueryFail");
 }
 
 
@@ -70,8 +71,8 @@ var payMethods = {
 			    tx.executeSql('SELECT * FROM pay_dtls WHERE emp_id='+loggedInUser, [], payQuerySuccess, payQueryFail);
 	},
 	updateQueryDB: function(tx) {
-				var tmpSqlStmt = 'UPDATE pay_dtls SET marital_status ="'+payObj.marital_status+'",exemptions='+payObj.exemptions+',addnl_witholdings='+payObj.addnl_witholdings+', worked_state="'+payObj.worked_state+'", lived_state="'+payObj.lived_state+'", suisdi="'+payObj.suisdi+'", worked_loc="'+payObj.worked_loc+'", lived_loc="'+payObj.worked_loc+'" WHERE emp_id='+loggedInUser;
-			    
+				var tmpSqlStmt = 'UPDATE pay_dtls SET marital_status ="'+payObj.marital_status+'",exemptions='+payObj.exemptions+',addnl_witholdings='+payObj.addnl_witholdings+', worked_state="'+payObj.worked_state+'", lived_state="'+payObj.lived_state+'", suisdi="'+payObj.suisdi+'", worked_loc="'+payObj.worked_loc+'", lived_loc="'+payObj.lived_loc+'" WHERE emp_id='+loggedInUser;
+			    console.log("pay update  : "+tmpSqlStmt);
 			    tx.executeSql(tmpSqlStmt, [], payUpdateQuerySuccess, payQueryFail);
 	},
 	updateDetails: function(){
@@ -95,33 +96,23 @@ function avlLaveQuerySuccess(tx, resultSet) {
 }
 function apldLaveQuerySuccess(tx, resultSet) {
 	var resLength = resultSet.rows.length; 
-	$("#leaveTable").children(".leaveRow").remove();
+	$("#tblApldLeaves").children("tbody").children("tr").remove();
 	if(resLength> 0){
 		$("#noLeaves").hide();
 		for(var i=0;i<resLength;i++){
-			 var aDiv = document.createElement("div");
-			 var bDiv = document.createElement("div");
-			 var cDiv = document.createElement("div");
-			 var aSpan = document.createElement("span");
-			 var bSpan = document.createElement("span");
-			 var cSpan = document.createElement("span");
-			 $(aDiv).addClass("ui-block-a leaveRow");
-			 $(bDiv).addClass("ui-block-b leaveRow");
-			 $(cDiv).addClass("ui-block-c leaveRow");
-			 $(aSpan).html(resultSet.rows.item(i).fromdate);
-			 $(bSpan).html(resultSet.rows.item(i).todate);
-			 $(cSpan).html(resultSet.rows.item(i).leave_type);
-			 $(aDiv).css("border","1px solid");
-			 $(bDiv).css("border","1px solid");
-			 $(cDiv).css("border","1px solid");
-			 $(aDiv).append(aSpan);
-			 $(bDiv).append(bSpan);
-			 $(cDiv).append(cSpan);
-			 $("#leaveTable").append(aDiv).append(bDiv).append(cDiv);
+			 var lRow = document.createElement("tr");
+			 var frTd = document.createElement("td");
+			 var toTd = document.createElement("td");
+			 var typeTd = document.createElement("td");
+			 $(frTd).html(resultSet.rows.item(i).fromdate);
+			 $(toTd).html(resultSet.rows.item(i).todate);
+			 $(typeTd).html(resultSet.rows.item(i).leave_type);
+			 $(lRow).append(frTd).append(toTd).append(typeTd);
+			 $("#tblApldLeaves").append(lRow)
 		}
-        $("#leaveTable").show();
+        $("#tblApldLeaves").show();
 	}else{
-		$("#leaveTable").hide();
+		$("#tblApldLeaves").hide();
 		$("#noLeaves").show();
 	}
 }
@@ -293,4 +284,7 @@ var logTimeMethods = {
 					db.transaction(this.fetchLogTimesQry, this.errorCB);
 	},
 
+}
+function backButtonCalBack(){
+	navigator.app.exitApp();
 }

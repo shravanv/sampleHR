@@ -86,16 +86,16 @@
         
         <div data-role="header" data-position="fixed">
             <span>
-                <a href="#" style="background-color:#50a7e6;border:0;" class="ui-btn  ui-corner-all ui-shadow ui-icon-home ui-btn-icon-notext"></a>
-                <a href="#" style="background-color:#50a7e6;border:0;" id="logClockIcon" class="ui-btn  ui-corner-all ui-shadow ui-icon-clock ui-btn-icon-notext"></a>
+                <a href="#" style="background-color:#50a7e6;border:0;margin-left:1%;" class="ui-btn  ui-corner-all ui-shadow ui-icon-home ui-btn-icon-notext"></a>
+                <a href="#" style="background-color:#50a7e6;border:0;margin-left:1%;" id="logClockIcon" class="ui-btn  ui-corner-all ui-shadow ui-icon-clock ui-btn-icon-notext"></a>
                 <a  href="#myPanel" style="background-color:#50a7e6;border:0;" class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-notext"></a>
             </span>
         </div>
-        <div data-role="footer" data-position="fixed">
+        <!-- <div data-role="footer" data-position="fixed">
            
             <h1>my Day</h1>
             
-        </div>
+        </div> -->
 
         <ul data-role="listview">
           
@@ -370,7 +370,13 @@
                         </div>
                         <div><a href="#" data-role="button" data-icon="check" id="btnSaveTaxWh">Save Changes</a></div>
                   </li> 
-            </ul> 
+            </ul>
+            <a href="#popupPaySave" id="paySavePop" data-rel="popup" data-position-to="" data-transition="pop"></a>
+            <div data-role="popup" id="popupPaySave" data-theme="a" class="ui-corner-all">
+                    <div style="padding:10px 20px;">
+                        <h3 id="paySaveMsg">Saved Successfully</h3>
+                    </div>
+            </div> 
         </div>
     </div>
     <!-- TimeCard Page -->
@@ -409,11 +415,11 @@
               <li style="background-color:burlywood;" data-role="list-divider">Available Leaves</li>
               <li>
                     <div class="ui-grid-a">
-                      <div class="ui-block-a" style="border:1px  ;"><span>Privilege Leaves (PL)</span></div>
+                      <div class="ui-block-a" style="border:1px  ;"><span>Privilege (PL)</span></div>
                       <div class="ui-block-b" style="border:1px  ;"><span id="prLeaves">10</span></div>
-                      <div class="ui-block-a" style="border:1px  ;"><span>Casual Leaves (CL)</span></div>
+                      <div class="ui-block-a" style="border:1px  ;"><span>Casual (CL)</span></div>
                       <div class="ui-block-b" style="border:1px  ;"><span id="caLeaves">6</span></div>
-                      <div class="ui-block-a" style="border:1px  ;"><span>Sick Leves (SL)</span></div>
+                      <div class="ui-block-a" style="border:1px  ;"><span>Sick (SL)</span></div>
                       <div class="ui-block-b" style="border:1px  ;"><span id="siLeaves">2</span></div>
                     </div>
               </li>
@@ -421,9 +427,9 @@
               <li>
                     <div style="padding:10px 20px;">
                     <label for="frmTime" >From</label>
-                    <input type="text" name="frmTime" id="frmDate" value="" placeholder="from date" data-theme="a">
+                    <input type="text" name="frmTime" id="frmDate" value="" placeholder="mm/dd/yyyy" data-theme="a">
                     <label for="toTime">To</label>
-                    <input type="text" name="toTime" id="toDate" value="" placeholder="to date" data-theme="a">
+                    <input type="text" name="toTime" id="toDate" value="" placeholder="mm/dd/yyyy" data-theme="a">
                     <label for="leaveType">Leave Type</label>
                     <select name="leaveType" id="leaveType">
                         <option value="Privilege">Privilege</option>
@@ -452,11 +458,23 @@
             <a style="color:#FFFAF0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Applied Leaves</a></span>
         </div>
         <div data-role="main" class="ui-content">
-            <div class="ui-grid-b" id="leaveTable">
+            <!-- <div class="ui-grid-b" id="leaveTable">
                   <div class="ui-block-a" style="border:1px  solid;"><span>From</span></div>
                   <div class="ui-block-b" style="border:1px  solid;"><span>To</span></div>
                   <div class="ui-block-c" style="border:1px  solid;"><span>Type</span></div>
-            </div>
+            </div> -->
+            <table data-role="table" data-mode="" class="ui-responsive ui-shadow" id="tblApldLeaves">
+              <thead>
+                <tr>
+                  <th data-priority="1">From</th>
+                  <th data-priority="2">To</th>
+                  <th data-priority="3">Leave Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+              </tbody>
+            </table>
             <b id="noLeaves"> No Applied Leaves</b>
         </div>
        
@@ -500,6 +518,7 @@
            });
 
            $("#menuLogout").on("click",function(){
+                document.addEventListener("backbutton", backButtonCalBack, false);
            });
 
            $("#menuProfile").on("click",function(){
@@ -661,11 +680,11 @@
                                 leaveType: lType
                             };
                             if(lType === "Privilege"){
-                                leaveObj.privilege = leaveObj.privilege-1;
+                                leaveObj.privilege = leaveObj.privilege-count;
                             }else if(lType === "Sick"){
-                                leaveObj.sick = leaveObj.sick-1;
-                            }else{
-                                leaveObj.casual = leaveObj.casual-1;
+                                leaveObj.sick = leaveObj.sick-count;
+                            }else if(lType === "Casual"){
+                                leaveObj.casual = leaveObj.casual-count;
                             }
                             leaveMethods.updateAvailableLeaves();
                             leaveMethods.insertNewLeave();

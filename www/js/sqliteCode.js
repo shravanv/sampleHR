@@ -76,7 +76,7 @@ function populateDataInTables(tx){
 	tx.executeSql(ins_STATES,[3,"ARIZONA"],successCB,errorInsert);
 	tx.executeSql(ins_PD,[301997,"Shravan Varala","New York",9988778866,"Member Technical","shravan@adpi.com","New York",9988778866,"Narender",9878768765],successCB,errorInsert);
 	tx.executeSql(ins_SCHED,[301997,"13012015",1000,1100,"Meeting"],successCB,errorInsert);
-	tx.executeSql(ins_LEA,[301997,"01/29/2014","01/29/2014","Privilege"],successCB,errorInsert);
+	/*tx.executeSql(ins_LEA,[301997,"01/29/2014","01/29/2014","Privilege"],successCB,errorInsert);*/
 	tx.executeSql(ins_AVLEA,[301997, 8, 6, 4],successCB,errorInsert);
 	tx.executeSql(ins_FED,[301997,"Married",1480,9876],successCB,errorInsert);
 	tx.executeSql(ins_ST,[301997,1,2,1],successCB,errorInsert);
