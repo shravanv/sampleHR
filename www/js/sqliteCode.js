@@ -3,7 +3,7 @@ var dbSuccess="null";
 //var dbDetails = db;
 var msgString = "";
 var ins_STATES = "INSERT INTO states VALUES (?,?)";
-var ins_LOG = "INSERT INTO login_dtls VALUES (?,?)";
+var ins_LOG = "INSERT INTO login_dtls VALUES (?,?,?)";
 var ins_PD = "INSERT INTO personal_dtls VALUES (?,?,?,?,?,?,?,?,?,?)";
 var ins_TC = "INSERT INTO timecard_dtls VALUES (?,?,?,?)";
 var ins_SCHED = "INSERT INTO schedule_dtls VALUES (?,?,?,?,?)";
@@ -69,8 +69,8 @@ function insertDataInTables() {
 }
 
 function populateDataInTables(tx){
-	tx.executeSql('INSERT INTO LOGIN (emp_id, password) VALUES (301997, "adphyd")');
-    tx.executeSql('INSERT INTO LOGIN (emp_id, password) VALUES (301998, "adpind")');
+	tx.executeSql('INSERT INTO LOGIN (emp_id, password, username) VALUES (301997, "adphyd", "Shravan")');
+    tx.executeSql('INSERT INTO LOGIN (emp_id, password, username) VALUES (301998, "adpind", "Kshitij")');
 	tx.executeSql(ins_STATES,[1,"TEXAS"],successCB,errorInsert);
 	tx.executeSql(ins_STATES,[2,"CALIFORNIA"],successCB,errorInsert);
 	tx.executeSql(ins_STATES,[3,"ARIZONA"],successCB,errorInsert);
@@ -95,7 +95,7 @@ function populateDataInTables(tx){
 function populateDB(tx) {
     /*tx.executeSql('DROP TABLE IF EXISTS LOGIN');
     tx.executeSql('DROP TABLE IF EXISTS personal_dtls');*/
-    tx.executeSql('CREATE TABLE IF NOT EXISTS LOGIN (emp_id unique, password)');
+    tx.executeSql('CREATE TABLE IF NOT EXISTS LOGIN (emp_id unique, password, username TEXT)');
     tx.executeSql("CREATE TABLE IF NOT EXISTS personal_dtls (emp_id INTEGER, name TEXT, city TEXT, contact INTEGER, designation TEXT, email TEXT, work_location TEXT, office_contact INTEGER, emer_name TEXT, emer_contact INTEGER)");
 	tx.executeSql("CREATE TABLE IF NOT EXISTS timecard_dtls (emp_id INTEGER, date TEXT, in_time INTEGER, out_time INTEGER)");
 	tx.executeSql("CREATE TABLE IF NOT EXISTS schedule_dtls (emp_id INTEGER , date TEXT , start_time INTEGER , end_time INTEGER , description TEXT)");
@@ -139,6 +139,7 @@ function onQuerySuccess(tx, resultSet) {
 	if(resultSet.rows.length > 0){
 		if(resultSet.rows.item(0).password === paswrdEntrd){
 			$("#userPwd").val("");
+			$("#userName").html(""+resultSet.rows.item(0).username);
 			populateLogTime();
 			$.mobile.changePage("#home");
 		}else{
